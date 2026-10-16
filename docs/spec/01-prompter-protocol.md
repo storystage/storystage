@@ -25,18 +25,18 @@ Implements workplan WP1.2 (tools), WP1.3 (context) and WP1.4 (Claude requests).
 ## 2. Context
 
 ### 2.1 API catalog (in the system prompt, cached)
-Generated **at build time** by a Maven step in `core/prompter`, into `prompter-catalog.json`:
+Built **when the Prompter starts**, by reflection over the same annotations the IDE uses for its block palette (`ApiCatalog`; this replaces the planned build-time step and gives the same result with no extra tooling):
 - For every class in `org.lgna.story` that the IDE shows: class name, superclass, and each method marked `@MethodTemplate` with visibility `PRIME_TIME` (not `TUCKED_AWAY` or `COMPLETELY_HIDDEN`).
 - Parameter names from `classinfos.json` (Java reflection doesn't keep them); parameter types; and the `Detail` keyword arguments each method accepts (`duration`, `animationStyle`, `asSeenBy`, …) with their value types.
 - Enum constants used as arguments (`MoveDirection.FORWARD`, `TurnDirection.LEFT`, …).
 
-It is rendered into the system prompt in a compact text form (one line per method). Budget: 40,000 tokens; the build fails if it exceeds 45,000.
+It is rendered into the system prompt in a compact text form (one line per method). Budget: 40,000 tokens; a unit test fails if it exceeds 45,000.
 
 ### 2.2 Gallery catalog (in the system prompt, cached)
 Generated at build time from the model resource enums (`org.lgna.story.resources.*`, including the Sims 2 classes when present). One line per resource: gallery path (for example `Quadruped/Cat/AbyssinianCat`), resource class and constant, the Alice class it creates (`SQuadruped`, `SBiped`, …), and a short display name. Budget: 12,000 tokens.
 
 ### 2.3 Project text (in each user turn)
-The current world, written as Tweedle source with the existing `org.alice.serialization.tweedle.Encoder`. Only user-authored types are included (the Scene, Program and user classes, with fields, methods and the generated set-up). Each statement and field is preceded by a short id comment, `/*#a1f3*/`: the first 4–8 characters of the node's UUID, lengthened only to avoid collisions. Tools refer to blocks by these ids. Budget: 20,000 tokens; above that, method bodies other than the one open in the editor are replaced by a one-line summary.
+The current world, written as Tweedle source with the existing `org.alice.serialization.tweedle.Encoder`. Only user-authored types are included (the Scene, Program and user classes, with fields, methods and the generated set-up). Each statement (except comments) is preceded by a short id comment, `/*#a1f3*/`: the first 4–8 characters of the node's UUID, lengthened only to avoid collisions. Tools refer to blocks by these ids. Budget: 20,000 tokens; above that, method bodies other than the one open in the editor are replaced by a one-line summary.
 
 ### 2.4 Screenshot (optional, in the user turn)
 Sent when the request involves placement or appearance ("Build it" mode, scene tools in the last turn), or when the student ticks "Let the Prompter see the scene". Taken from the scene view with the renderer's image capture, downscaled to at most 1024 px on the long side, as JPEG at quality 80.

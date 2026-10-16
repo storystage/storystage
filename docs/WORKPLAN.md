@@ -118,9 +118,9 @@ Each package lists its objective, tasks, deliverables and the check that closes 
 **Done when:** integration tests pass against the fake server in CI.
 
 ### WP7: Context builders
-- [ ] 7.1 API catalog extractor (classinfos + annotations, PRIME_TIME only), generated at build time. (C)
+- [x] 7.1 API catalog extractor (classinfos + annotations, PRIME_TIME only), built at start-up. (C)
 - [ ] 7.2 Gallery catalog (resource enums: class names, display names, categories). (C)
-- [ ] 7.3 Project-to-Tweedle text using the existing encoder, with size limits. (C)
+- [x] 7.3 Project-to-Tweedle text using the existing encoder, with size limits. (C)
 - [ ] 7.4 Scene screenshot via the renderer's image capture, downscaled. (C)
 
 **Done when:** a sample world's context fits the token budget defined in 1.3.
