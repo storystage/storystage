@@ -119,16 +119,16 @@ Each package lists its objective, tasks, deliverables and the check that closes 
 
 ### WP7: Context builders
 - [x] 7.1 API catalog extractor (classinfos + annotations, PRIME_TIME only), built at start-up. (C)
-- [ ] 7.2 Gallery catalog (resource enums: class names, display names, categories). (C)
+- [x] 7.2 Gallery catalog (resource enums: class names, display names, categories). (C)
 - [x] 7.3 Project-to-Tweedle text using the existing encoder, with size limits. (C)
 - [ ] 7.4 Scene screenshot via the renderer's image capture, downscaled. (C)
 
 **Done when:** a sample world's context fits the token budget defined in 1.3.
 
 ### WP8: Prompter tools and executor
-- [ ] 8.1 Tool executor framework: validate input, look up nodes by UUID, build the edit, commit through `UserActivity`, return a result or error. (C)
-- [ ] 8.2 `add_model` and `set_property` (scene setup via `DeclareGalleryFieldEdit` and setup statements). (C)
-- [ ] 8.3 `insert_statement` (procedures with keyed details such as duration). (C)
+- [x] 8.1 Tool executor framework: validate input, look up nodes by UUID, build the edit, commit through `UserActivity`, return a result or error. (C)
+- [x] 8.2 `add_model` and `set_property` (scene setup via `DeclareGalleryFieldEdit` and setup statements). (C)
+- [x] 8.3 `insert_statement` (procedures with keyed details such as duration). (C)
 - [ ] 8.4 `declare_procedure` and `add_event_listener`. (C; TR1 covers simple cases)
 - [ ] 8.5 `explain` and block highlighting. (C)
 - [ ] 8.6 Multi-step request handling: one Project History group per request, so a whole request can be undone. (C)

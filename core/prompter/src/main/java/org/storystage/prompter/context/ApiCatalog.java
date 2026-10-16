@@ -167,12 +167,18 @@ public final class ApiCatalog {
     return new ArrayList<>(ordered);
   }
 
-  static boolean isPrimeTime(Method m) {
+  /** True for public instance methods the block palette shows (PRIME_TIME). */
+  public static boolean isPrimeTime(Method m) {
     if (!Modifier.isPublic(m.getModifiers()) || Modifier.isStatic(m.getModifiers()) || m.isBridge() || m.isSynthetic()) {
       return false;
     }
     MethodTemplate template = m.getAnnotation(MethodTemplate.class);
     return template != null && template.visibility() == Visibility.PRIME_TIME;
+  }
+
+  /** The catalog entry for a method, with parameter names from Alice's class info when known. */
+  public static Entry entryOf(Method m) {
+    return toEntry(m.getDeclaringClass(), m, parameterNamesFor(m.getDeclaringClass()).get(m));
   }
 
   private static Entry toEntry(Class<?> cls, Method m, String[] knownNames) {
