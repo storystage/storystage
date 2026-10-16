@@ -46,10 +46,11 @@ import edu.cmu.cs.dennisc.javax.swing.option.Dialogs;
 import edu.cmu.cs.dennisc.jira.JIRAReport;
 import org.alice.ide.croquet.models.help.views.AbstractIssueView;
 import org.alice.ide.issue.swing.views.ProgressPane;
-import org.lgna.project.ProjectVersion;
+import org.storystage.StoryStage;
 
 import javax.swing.JOptionPane;
 import java.awt.*;
+import java.awt.datatransfer.StringSelection;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -57,10 +58,10 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 
 public class SubmitReportUtilities {
-  public static final String EMAIL_SUBJECT = "Alice %s %s %s";
-  public static final String EMAIL_BODY = "Description\n\n%s\n\nSteps\n\n%s\n\nThread\n\n%s\n\nEnvironment\n\n%s";
-  public static final String HELP_ADDRESS = "bug_report@alice.org";
-  public static final String EMAIL_URI = "mailto:" + HELP_ADDRESS + "?subject=%s&body=%s";
+  // StoryStage: reports go to the StoryStage GitHub issues, not to the Alice team
+  public static final String REPORT_TITLE = "StoryStage %s (Alice %s) %s: %s";
+  public static final String REPORT_BODY = "Description\n\n%s\n\nSteps\n\n%s\n\nThread\n\n```\n%s\n```\n\nEnvironment\n\n%s";
+  private static final String KEY_PATTERN = "sk-ant-[A-Za-z0-9_\\-]{20,}";
 
   private SubmitReportUtilities() {
     throw new AssertionError();
@@ -73,7 +74,7 @@ public class SubmitReportUtilities {
     if (USE_REST_INTERFACE) {
         return submitBugByRest(report, root);
     }
-    return submitBugByMail(report, root);
+    return submitBugToGitHub(report, root);
   }
 
 
@@ -109,27 +110,28 @@ public class SubmitReportUtilities {
     return progressPane;
   }
 
-  private static ProgressPane submitBugByMail(JIRAReport report, Component root) {
-    Desktop desktop;
+  private static ProgressPane submitBugToGitHub(JIRAReport report, Component root) {
     ProgressPane progressPane = new ProgressPane();
-    if (!Desktop.isDesktopSupported() || !(desktop = Desktop.getDesktop()).isSupported(Desktop.Action.MAIL)) {
-      throw new RuntimeException("Unable to use mail service.");
-    }
+    String title = REPORT_TITLE.formatted(StoryStage.VERSION, StoryStage.getAliceBaseVersion(), report.getType(), report.getTruncatedSummary());
+    String body = REPORT_BODY.formatted(report.getDescription(), report.getSteps(), report.getException(), report.getEnvironment());
+    // Never pass an API key on, even if one appears in an error message.
+    body = body.replaceAll(KEY_PATTERN, "sk-ant-(hidden)");
+    Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection(body), null);
+    String url = StoryStage.NEW_ISSUE_URL + "?title=" + URLEncoder.encode(title, StandardCharsets.UTF_8).replaceAll("\\+", "%20");
+    Dialogs.showInfo("Report a problem", "The details of this problem have been copied to the clipboard.\n\n"
+        + "On the page that opens, paste them into the description and add anything else that helps.\n"
+        + "If no page opens, go to:\n" + StoryStage.NEW_ISSUE_URL + "\n\n"
+        + "Reports are public, so leave out names and other personal details.");
     try {
-      String subject = EMAIL_SUBJECT.formatted(ProjectVersion.getCurrentVersionText(), report.getType(), report.getTruncatedSummary());
-      String body = EMAIL_BODY.formatted(report.getDescription(), report.getSteps(), report.getException(), report.getEnvironment());
-      subject = URLEncoder.encode(subject, StandardCharsets.UTF_8).replaceAll("\\+", "%20");
-      body = URLEncoder.encode(body, StandardCharsets.UTF_8).replaceAll("\\+", "%20");
-      URI mailto = new URI(EMAIL_URI.formatted(subject, body));
-      Dialogs.showInfo("Add current project", "If your project is relevant please add it to the email.");
-      desktop.mail(mailto);
+      if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
+        Desktop.getDesktop().browse(new URI(url));
+      }
       if (root != null) {
         root.setVisible(false);
       }
       progressPane.done(true);
     } catch (URISyntaxException | IOException e) {
       progressPane.done(false);
-      throw new RuntimeException(e);
     }
     return progressPane;
   }

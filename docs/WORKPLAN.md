@@ -86,7 +86,7 @@ Each package lists its objective, tasks, deliverables and the check that closes 
 ### WP3: Rebranding
 **Objective:** the app presents itself as StoryStage while crediting Alice.
 - [ ] 3.1 App name, window title, splash, icons, About dialog (credits and licences from NOTICE). (C)
-- [ ] 3.2 Separate user data folder (`StoryStage`, not `Alice3`), so an existing Alice install is untouched. (C)
+- [x] 3.2 Separate user data folder (`StoryStage`, not `Alice3`), so an existing Alice install is untouched. (C)
 - [ ] 3.3 English strings in theatre vocabulary where agreed (Rehearse, Backdrops, Cast and props); other locales keep the Alice wording until translated. (C)
 - [ ] 3.4 A logo and splash artwork. (C draft; U approves)
 
