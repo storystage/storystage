@@ -216,40 +216,48 @@ public final class WorldTools implements ToolExecutor {
     String value = text(in, "value");
     ThisFieldAccessFactory target = ThisFieldAccessFactory.getInstance(field);
     switch (property) {
-    case "position": {
+    case "position":
       requireType(field, SMovableTurnable.class, objectName);
-      double[] xyz = numbers(value, 3);
-      JavaMethod setter = JavaMethod.getInstance(SMovableTurnable.class, "setPositionRelativeToVehicle", Position.class, org.lgna.story.SetPositionRelativeToVehicle.Detail[].class);
-      Expression[] args = {this.create(new Position(xyz[0], xyz[1], xyz[2]))};
-      this.commit(activity -> new LocalTransformationEdit(activity, target, setter, args));
+      this.setPosition(target, numbers(value, 3));
       break;
-    }
-    case "turn_degrees": {
+    case "turn_degrees":
       requireType(field, STurnable.class, objectName);
-      double degrees = ValueConverter.parseNumber(value);
-      JavaMethod turn = JavaMethod.getInstance(STurnable.class, "turn", TurnDirection.class, Number.class, org.lgna.story.Turn.Detail[].class);
-      Expression[] args = {this.create(degrees >= 0 ? TurnDirection.LEFT : TurnDirection.RIGHT), new org.lgna.project.ast.DoubleLiteral(Math.abs(degrees) / 360.0)};
-      this.commit(activity -> new LocalTransformationEdit(activity, target, turn, args));
+      this.setTurn(target, ValueConverter.parseNumber(value));
       break;
-    }
-    case "paint": {
-      Object paint = ValueConverter.constant(Color.class, value);
-      JavaMethod setter = JavaMethod.getInstance(org.lgna.story.SModel.class, "setPaint", Paint.class, org.lgna.story.SetPaint.Detail[].class);
-      Expression[] args = {this.create(paint)};
-      this.commit(activity -> new SetPaintEdit(activity, target, setter, args));
+    case "paint":
+      this.setPaint(target, ValueConverter.constant(Color.class, value));
       break;
-    }
-    case "opacity": {
-      double opacity = Math.max(0, Math.min(1, ValueConverter.parseNumber(value)));
-      JavaMethod setter = JavaMethod.getInstance(org.lgna.story.SModel.class, "setOpacity", Number.class, org.lgna.story.SetOpacity.Detail[].class);
-      Expression[] args = {new org.lgna.project.ast.DoubleLiteral(opacity)};
-      this.commit(activity -> new SetOpacityEdit(activity, target, setter, args));
+    case "opacity":
+      this.setOpacity(target, Math.max(0, Math.min(1, ValueConverter.parseNumber(value))));
       break;
-    }
     default:
       throw new ToolError("bad_argument", "Properties you can set are position, turn_degrees, paint and opacity.");
     }
     return Result.ok(ok(Map.of()), text(in, "narration"));
+  }
+
+  private void setPosition(ThisFieldAccessFactory target, double[] xyz) throws ToolError {
+    JavaMethod setter = JavaMethod.getInstance(SMovableTurnable.class, "setPositionRelativeToVehicle", Position.class, org.lgna.story.SetPositionRelativeToVehicle.Detail[].class);
+    Expression[] args = {this.create(new Position(xyz[0], xyz[1], xyz[2]))};
+    this.commit(activity -> new LocalTransformationEdit(activity, target, setter, args));
+  }
+
+  private void setTurn(ThisFieldAccessFactory target, double degrees) throws ToolError {
+    JavaMethod turn = JavaMethod.getInstance(STurnable.class, "turn", TurnDirection.class, Number.class, org.lgna.story.Turn.Detail[].class);
+    Expression[] args = {this.create(degrees >= 0 ? TurnDirection.LEFT : TurnDirection.RIGHT), new org.lgna.project.ast.DoubleLiteral(Math.abs(degrees) / 360.0)};
+    this.commit(activity -> new LocalTransformationEdit(activity, target, turn, args));
+  }
+
+  private void setPaint(ThisFieldAccessFactory target, Object paint) throws ToolError {
+    JavaMethod setter = JavaMethod.getInstance(org.lgna.story.SModel.class, "setPaint", Paint.class, org.lgna.story.SetPaint.Detail[].class);
+    Expression[] args = {this.create(paint)};
+    this.commit(activity -> new SetPaintEdit(activity, target, setter, args));
+  }
+
+  private void setOpacity(ThisFieldAccessFactory target, double opacity) {
+    JavaMethod setter = JavaMethod.getInstance(org.lgna.story.SModel.class, "setOpacity", Number.class, org.lgna.story.SetOpacity.Detail[].class);
+    Expression[] args = {new org.lgna.project.ast.DoubleLiteral(opacity)};
+    this.commit(activity -> new SetOpacityEdit(activity, target, setter, args));
   }
 
   private static void requireType(UserField field, Class<?> cls, String name) throws ToolError {
