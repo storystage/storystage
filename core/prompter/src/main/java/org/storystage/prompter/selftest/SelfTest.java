@@ -62,6 +62,8 @@ public final class SelfTest {
       // On a CI machine nobody can click the licence prompts. Elsewhere they show as usual.
       Preferences.userRoot().node("/org/lgna/project").putBoolean("isLicenseAccepted", true);
       Preferences.userRoot().node("/edu/cmu/cs/dennisc/nebulous").putBoolean("isLicenseAccepted", true);
+      // CI runners have no GPU, and off-screen capture (scene thumbnails) hangs there.
+      System.setProperty("storystage.offscreenRendering", "false");
     }
     RendererNativeLibraryLoader.initializeIfNecessary();
     File world = File.createTempFile("storystage-selftest", ".a3p");
