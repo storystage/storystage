@@ -9,7 +9,7 @@ A Croquet wizard (`WizardDialogCoreComposite` with `WizardPageComposite` pages),
 | Page | Content | Leaves when |
 |---|---|---|
 | 1 What the Prompter does | Plain-language summary; what is sent to Anthropic (the world's code, scene pictures when allowed, the typed or transcribed request); what is never sent (audio, files, the key to anyone but Anthropic); typical cost per request (about 7 cents on the default model); "The Claude account must belong to an adult (18 or over): a parent, teacher or school." | **Next** |
-| 2 Create your Claude account | Steps with the Console address shown as copyable text: sign up; add credit or billing; create a workspace called "StoryStage" and set a monthly spend limit; create an API key in that workspace | **Next** |
+| 2 Create your Claude account | Steps with the Console address shown as copyable text: sign up; add credit or billing; create a workspace called "StoryStage" and set a monthly spend limit; create an API key in that workspace (choosing **Continue with an API key** when the Console offers identity federation, which is for cloud workloads); copy it at once, as it is shown only once | **Next** |
 | 3 Enter your key | Password-style field (masked, with a show toggle), paste allowed. **Check key** lists models with the key (no tokens used) | The check succeeds |
 | 4 Options | Mode default ("Show me how" or "Build it"); voice input on/off; spoken steps on/off; "let the Prompter see the scene" on/off | **Finish** |
 

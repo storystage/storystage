@@ -126,9 +126,11 @@ public final class SetupWizard extends JDialog {
     panel.add(text("<h2>Create your Claude account</h2>"
         + "<ol>"
         + "<li>Go to the Claude Console (address below) and sign up.</li>"
-        + "<li>Add credit or billing.</li>"
+        + "<li>Add credit or billing. This is separate from any Claude, Claude Pro or Claude Code plan.</li>"
         + "<li>Create a workspace called <b>StoryStage</b> and set a monthly <b>spend limit</b>, so the Prompter can never cost more than you choose.</li>"
-        + "<li>In that workspace, create an <b>API key</b> and copy it.</li>"
+        + "<li>In that workspace, create an <b>API key</b>. If you're offered identity federation, choose "
+        + "<b>Continue with an API key</b>: federation is for cloud servers, not for apps on your computer.</li>"
+        + "<li>Copy the key straight away: the Console shows it only once. Paste it only into StoryStage.</li>"
         + "</ol>"), BorderLayout.CENTER);
     JTextField address = new JTextField(CONSOLE_ADDRESS);
     address.setEditable(false);

@@ -36,7 +36,7 @@ Never paste the key anywhere except the StoryStage set-up wizard.
 |---|---|---|---|
 | C1 | Tick **Use the StoryStage Prompter**. | The set-up wizard opens. | |
 | C2 | Page 1: read it. Try **Next** before ticking the agreement. | **Next** works only after the agreement is ticked. The text says what is sent and what never is. | |
-| C3 | Page 2. | The steps and the Console address `https://platform.claude.com`, which can be copied. | |
+| C3 | Page 2. | The steps and the Console address `https://platform.claude.com`, which can be copied. The steps match what the Console shows, including the identity federation prompt (choose **Continue with an API key**). | |
 | C4 | Page 3: type `hello` and press **Check key**. | "That doesn't look like a Claude API key." **Next** stays off. | |
 | C5 | Paste a real key with a typo added. **Check key**. | "That key wasn't accepted." | |
 | C6 | Paste your real key. **Show key**, then hide it again. **Check key**. | Key works; **Next** turns on. | |
