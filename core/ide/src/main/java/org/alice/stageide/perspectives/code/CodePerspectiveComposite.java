@@ -48,6 +48,7 @@ import org.alice.ide.ProjectDocumentFrame;
 import org.lgna.croquet.Composite;
 import org.lgna.croquet.LazyImmutableSplitComposite;
 import org.lgna.croquet.views.SplitPane;
+import org.storystage.prompter.spi.Prompters;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -69,7 +70,8 @@ public class CodePerspectiveComposite extends LazyImmutableSplitComposite<CodeCo
 
   @Override
   protected Composite<?> createTrailingComposite() {
-    return this.projectDocumentFrame.getDeclarationsEditorComposite();
+    // StoryStage: the Prompter panel, when present, sits to the right of the code editor
+    return Prompters.wrapWithPanel(UUID.fromString("3f1b6a52-8c1e-4d0a-9b27-6e5c2a7d91f4"), this.projectDocumentFrame.getDeclarationsEditorComposite());
   }
 
   public void incrementIgnoreDividerLocationChangeCount() {
