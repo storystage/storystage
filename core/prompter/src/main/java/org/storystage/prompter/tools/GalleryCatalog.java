@@ -3,8 +3,10 @@
  */
 package org.storystage.prompter.tools;
 
+import org.alice.stageide.modelresource.ClassResourceKey;
 import org.alice.stageide.modelresource.EnumConstantResourceKey;
 import org.alice.stageide.modelresource.ResourceKey;
+import org.lgna.story.resources.ModelResource;
 import org.lgna.story.resourceutilities.GalleryResourceTreeNode;
 import org.lgna.story.resourceutilities.StorytellingResourcesTreeUtils;
 
@@ -59,9 +61,23 @@ public final class GalleryCatalog {
         id = enumKey.getInternalName();
       }
       out.putIfAbsent(id, enumKey);
+    } else if (key instanceof ClassResourceKey classKey && classKey.getModelResourceCls().isEnum()) {
+      // Most gallery leaves are resource classes; each enum constant is one model (spec 01 §2.2).
+      addConstants(classKey.getModelResourceCls(), String.join("/", here), out);
     }
     for (GalleryResourceTreeNode child : node.childrenList()) {
       collect(child, here, out);
+    }
+  }
+
+  @SuppressWarnings("unchecked")
+  static void addConstants(Class<? extends ModelResource> cls, String path, Map<String, EnumConstantResourceKey> out) {
+    ModelResource[] constants = cls.getEnumConstants();
+    String base = path.isEmpty() ? cls.getSimpleName().replace("Resource", "") : path;
+    for (ModelResource constant : constants) {
+      Enum<? extends ModelResource> e = (Enum<? extends ModelResource>) constant;
+      String id = constants.length == 1 ? base : base + "/" + e.name();
+      out.putIfAbsent(id, new EnumConstantResourceKey(e));
     }
   }
 
