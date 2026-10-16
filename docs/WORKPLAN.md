@@ -166,10 +166,10 @@ Each package lists its objective, tasks, deliverables and the check that closes 
 - [ ] 12.4 Privacy notice text for the website. (C draft; U approves) *Draft in docs/privacy.md, waiting for approval.*
 
 ### WP13: Testing and quality
-- [ ] 13.1 Unit tests (executor, schemas, key store, switches, TTS queue). (C)
-- [ ] 13.2 Fake-server integration tests in CI. (C)
-- [ ] 13.3 Evaluation set (40+ requests) with expected outcomes; scored on recorded and, by the owner, live runs. (C builds; U runs live)
-- [ ] 13.4 Manual test script for TR1 on Windows. (C)
+- [x] 13.1 Unit tests (executor, schemas, key store, switches, TTS queue). (C)
+- [x] 13.2 Fake-server integration tests in CI. (C)
+- [x] 13.3 Evaluation set (40+ requests) with expected outcomes; scored on recorded and, by the owner, live runs. (C builds; U runs live) *47 requests in docs/eval; recorded-response scoring follows the first live run.*
+- [x] 13.4 Manual test script for TR1 on Windows. (C) *docs/test/TR1-manual.md*
 - [ ] 13.5 Performance check on a 4 GB PC: start-up, model load, Prompter latency. (C via CI where possible; U on the PC)
 
 ### WP14: Website and distribution
