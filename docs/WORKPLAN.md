@@ -93,10 +93,10 @@ Each package lists its objective, tasks, deliverables and the check that closes 
 **Done when:** no "Alice" appears as the product name in the UI, and "based on Alice 3" plus the credits appear in About.
 
 ### WP4: Settings, off switches and admin lock
-- [ ] 4.1 Preferences → "StoryStage Prompter" on/off, voice input, spoken steps; persisted with Croquet `PreferenceBooleanState`. (C)
-- [ ] 4.2 Machine-wide lock: a policy file or JVM option forces the Prompter off and hides the switches. (C)
+- [x] 4.1 Preferences → "StoryStage Prompter" on/off, voice input, spoken steps; persisted with Croquet `PreferenceBooleanState`. (C)
+- [x] 4.2 Machine-wide lock: a policy file or JVM option forces the Prompter off and hides the switches. (C)
 - [ ] 4.3 When off: no panel, no microphone, no Claude client, no network. Verified by test. (C)
-- [ ] 4.4 Build without `core/prompter` still compiles and runs. (C, CI job)
+- [x] 4.4 Build without `core/prompter` still compiles and runs. (C, CI job)
 
 **Done when:** all three levels are covered by tests.
 

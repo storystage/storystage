@@ -50,6 +50,11 @@ import org.lgna.croquet.MenuModel;
 import org.lgna.croquet.PredeterminedMenuModel;
 
 import java.util.UUID;
+import org.lgna.croquet.StandardMenuItemPrepModel;
+import org.storystage.prompter.spi.Prompters;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * @author Dennis Cosgrove
@@ -64,7 +69,11 @@ public class PreferencesMenuModel extends PredeterminedMenuModel {
   }
 
   private PreferencesMenuModel() {
-    super(UUID.fromString("e8f8a5b3-83be-4519-8956-3ef2b9546e23"),
+    super(UUID.fromString("e8f8a5b3-83be-4519-8956-3ef2b9546e23"), createItems());
+  }
+
+  private static List<StandardMenuItemPrepModel> createItems() {
+    List<StandardMenuItemPrepModel> items = new ArrayList<>(Arrays.<StandardMenuItemPrepModel>asList(
           FormatterState.getInstance().getMenuModel(),
           LocaleState.getInstance().getMenuModel(),
           MenuModel.SEPARATOR, IsJavaCodeOnTheSideState.getInstance().getMenuItemPrepModel(),
@@ -74,6 +83,13 @@ public class PreferencesMenuModel extends PredeterminedMenuModel {
           IsIncludingProgramType.getInstance().getMenuItemPrepModel(),
           IsIncludingConstructors.getInstance().getMenuItemPrepModel(),
           MenuModel.SEPARATOR, AllowNullMenuModel.getInstance(),
-          MenuModel.SEPARATOR, GalleryMenuModel.getInstance());
+          MenuModel.SEPARATOR, GalleryMenuModel.getInstance()));
+    // StoryStage: Prompter settings, when the Prompter module is present
+    List<StandardMenuItemPrepModel> prompterItems = Prompters.getPreferenceMenuItems();
+    if (!prompterItems.isEmpty()) {
+      items.add(MenuModel.SEPARATOR);
+      items.addAll(prompterItems);
+    }
+    return items;
   }
 }

@@ -115,6 +115,8 @@
     <module>core/model-loading</module>
     <module>core/tweedle</module>
     <module>core/models</module>
+    <!-- StoryStage: optional Prompter module -->
+    <module>core/prompter</module>
 
     <module>external</module>
     <module>external/collada</module>
@@ -161,6 +163,11 @@
       <dependency>
         <groupId>org.alice</groupId>
         <artifactId>issue-reporting</artifactId>
+        <version>9.1.0</version>
+      </dependency>
+      <dependency>
+        <groupId>org.alice</groupId>
+        <artifactId>prompter</artifactId>
         <version>9.1.0</version>
       </dependency>
       <dependency>

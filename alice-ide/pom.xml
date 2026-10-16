@@ -113,6 +113,22 @@
   </dependencies>
 
   <profiles>
+    <!-- StoryStage: the Prompter is included unless -DincludePrompter=false -->
+    <profile>
+      <id>includePrompter</id>
+      <activation>
+        <property>
+          <name>includePrompter</name>
+          <value>!false</value>
+        </property>
+      </activation>
+      <dependencies>
+        <dependency>
+          <groupId>org.alice</groupId>
+          <artifactId>prompter</artifactId>
+        </dependency>
+      </dependencies>
+    </profile>
     <profile>
       <id>includeSims</id>
       <activation>
