@@ -24,6 +24,7 @@ import org.storystage.prompter.claude.ToolExecutor;
 import org.storystage.prompter.context.ApiCatalog;
 import org.storystage.prompter.context.NodeIds;
 import org.storystage.prompter.context.ProjectText;
+import org.storystage.prompter.context.ScenePicture;
 import org.storystage.prompter.tools.GalleryCatalog;
 import org.storystage.prompter.tools.ToolSchemas;
 import org.storystage.prompter.tools.WorldTools;
@@ -134,6 +135,9 @@ public final class SelfTest {
     this.check("project text has the click event", text.contains("addMouseClickOnObjectListener") && text.contains("Ouch"), null);
     this.check("project text has the loop", text.contains("star.move"), null);
     log("project text: " + text.length() + " characters");
+    // Informational: off-screen rendering may not be available on every machine.
+    byte[] picture = onEdt(ScenePicture::capture);
+    log("scene picture: " + (picture != null ? picture.length + " bytes" : "not available"));
 
     int edits = tools.getCommittedEdits().size();
     this.check("every change is in Project History", historySize() == historyBefore + edits, (historySize() - historyBefore) + " of " + edits);

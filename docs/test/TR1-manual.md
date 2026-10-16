@@ -40,7 +40,7 @@ Never paste the key anywhere except the StoryStage set-up wizard.
 | C4 | Page 3: type `hello` and press **Check key**. | "That doesn't look like a Claude API key." **Next** stays off. | |
 | C5 | Paste a real key with a typo added. **Check key**. | "That key wasn't accepted." | |
 | C6 | Paste your real key. **Show key**, then hide it again. **Check key**. | Key works; **Next** turns on. | |
-| C7 | Page 4: tick both options. **Finish**. | The Prompter panel appears beside the code editor, with a greeting. | |
+| C7 | Page 4: tick voice input and spoken steps; leave the scene picture unticked. **Finish**. | The Prompter panel appears beside the code editor, with a greeting. | |
 | C8 | Windows: Control Panel → Credential Manager → Windows Credentials. | An entry for StoryStage. Its value isn't shown in StoryStage anywhere. | |
 | C9 | Cancel test: Preferences → untick the Prompter, tick again. | Panel hides and shows. With a key stored, the wizard doesn't open again. | |
 
@@ -62,6 +62,7 @@ Start each step from a new Grass world unless it says otherwise. Note how long e
 | D10 | "Make it move." (with two objects) | One short clarifying question. | |
 | D11 | **New conversation**, then "What did I just ask you?" | It doesn't remember the earlier conversation. | |
 | D12 | Usage line under the buttons. | An estimate that goes up with each request. Compare with the Console's usage page later. | |
+| D14 | Preferences → tick **Prompter can see a picture of the scene**. Mode Explain only: "What can you see in my scene?" | It describes the objects it can see. Untick it afterwards if you prefer. | |
 | D13 | Turn Wi-Fi off and send a request. | "You're offline, so the Prompter can't help right now..."; StoryStage keeps working. Turn Wi-Fi back on. | |
 
 ## E. Voice

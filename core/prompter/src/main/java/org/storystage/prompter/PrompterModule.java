@@ -8,6 +8,7 @@ import org.lgna.croquet.Composite;
 import org.lgna.croquet.StandardMenuItemPrepModel;
 import org.storystage.prompter.settings.PrompterEnabledState;
 import org.storystage.prompter.settings.PrompterPolicy;
+import org.storystage.prompter.settings.SceneImagesState;
 import org.storystage.prompter.settings.SpokenStepsState;
 import org.storystage.prompter.settings.VoiceInputState;
 import org.storystage.prompter.spi.PrompterProvider;
@@ -40,6 +41,7 @@ public final class PrompterModule implements PrompterProvider {
       PrompterEnabledState.getInstance().setEnabled(false);
       VoiceInputState.getInstance().setEnabled(false);
       SpokenStepsState.getInstance().setEnabled(false);
+      SceneImagesState.getInstance().setEnabled(false);
     } else if (!this.policy.isVoiceInputAllowed()) {
       VoiceInputState.getInstance().setEnabled(false);
     }
@@ -69,7 +71,8 @@ public final class PrompterModule implements PrompterProvider {
     return Arrays.asList(
         PrompterEnabledState.getInstance().getMenuItemPrepModel(),
         VoiceInputState.getInstance().getMenuItemPrepModel(),
-        SpokenStepsState.getInstance().getMenuItemPrepModel());
+        SpokenStepsState.getInstance().getMenuItemPrepModel(),
+        SceneImagesState.getInstance().getMenuItemPrepModel());
   }
 
   private void runSetUpOrSwitchOff() {

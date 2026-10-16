@@ -10,7 +10,7 @@ StoryStage is a free 3D storytelling and coding app for learning, based on Alice
 
 - StoryStage runs on your computer. The StoryStage project runs no servers and receives none of your data.
 - The **Prompter** (the optional AI helper) is off until an adult sets it up with their own Claude account.
-- When the Prompter is on, your request and your world's code go from your computer to Anthropic, under that Claude account and Anthropic's terms.
+- When the Prompter is on, your request and your world's code (and a small picture of the scene, if you allow it) go from your computer to Anthropic, under that Claude account and Anthropic's terms.
 - Speech is turned into text on your computer. Recordings of your voice are never sent anywhere.
 - Schools can turn the Prompter off for everyone on a computer.
 
@@ -27,7 +27,8 @@ The Prompter is switched off when StoryStage is installed. To switch it on, an a
 **What is sent to Anthropic, each time you ask the Prompter something:**
 - your request, as text (typed, or turned into text from speech on your computer);
 - your world's code, with the names of the characters and objects in it;
-- the conversation so far in this session, so the Prompter can follow on.
+- the conversation so far in this session, so the Prompter can follow on;
+- only if you tick **Prompter can see a picture of the scene** (off unless you choose it): a small picture of the scene, as the camera sees it.
 
 **What is never sent:** recordings of your voice, your other files, or anything about you that you don't type or say in a request.
 

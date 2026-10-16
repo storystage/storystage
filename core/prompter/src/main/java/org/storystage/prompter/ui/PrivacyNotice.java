@@ -24,7 +24,8 @@ final class PrivacyNotice {
 
   /** The notice as HTML body content. */
   static String html() {
-    return "<p><b>What is sent to Anthropic:</b> your typed or spoken request (as text) and your world's code. "
+    return "<p><b>What is sent to Anthropic:</b> your typed or spoken request (as text), your world's code and, "
+        + "only if you allow it, a small picture of the scene. "
         + "It goes straight from this computer to Anthropic under your own Claude account and its terms "
         + "(" + ANTHROPIC_TERMS + ", " + ANTHROPIC_PRIVACY + "). StoryStage itself runs no servers and receives none of your data.</p>"
         + "<p><b>What is never sent:</b> recordings of your voice (speech is turned into text on this computer), "
