@@ -111,9 +111,9 @@ Each package lists its objective, tasks, deliverables and the check that closes 
 
 ### WP6: Claude client
 - [x] 6.1 Add `com.anthropic:anthropic-java`; client factory using the stored key. (C)
-- [ ] 6.2 Streaming requests off the Swing thread; cancel/stop; timeouts and retries. (C)
-- [ ] 6.3 Prompt caching of the catalog; refusal handling; server-side fallback. (C)
-- [ ] 6.4 Fake Claude server for tests (recorded responses), wired by base URL. (C)
+- [x] 6.2 Streaming requests off the Swing thread; cancel/stop; timeouts and retries. (C)
+- [x] 6.3 Prompt caching of the catalog; refusal handling; server-side fallback. (C)
+- [x] 6.4 Fake Claude server for tests (recorded responses), wired by base URL. (C)
 
 **Done when:** integration tests pass against the fake server in CI.
 
