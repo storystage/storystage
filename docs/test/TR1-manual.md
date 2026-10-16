@@ -39,6 +39,7 @@ Never paste the key anywhere except the StoryStage set-up wizard.
 | C3 | Page 2. | The steps and the Console address `https://platform.claude.com`, which can be copied. The steps match what the Console shows, including the identity federation prompt (choose **Continue with an API key**). | |
 | C4 | Page 3: type `hello` and press **Check key**. | "That doesn't look like a Claude API key." **Next** stays off. | |
 | C5 | Paste a real key with a typo added. **Check key**. | "That key wasn't accepted." | |
+| C5b | (Before C6) In the Console, the key's **Scope** is the StoryStage workspace and its expiry is noted: ______. | The key shows under that workspace. | |
 | C6 | Paste your real key. **Show key**, then hide it again. **Check key**. | Key works; **Next** turns on. | |
 | C7 | Page 4: tick voice input and spoken steps; leave the scene picture unticked. **Finish**. | The Prompter panel appears beside the code editor, with a greeting. | |
 | C8 | Windows: Control Panel → Credential Manager → Windows Credentials. | An entry for StoryStage. Its value isn't shown in StoryStage anywhere. | |

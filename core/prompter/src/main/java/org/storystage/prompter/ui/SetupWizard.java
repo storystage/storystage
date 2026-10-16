@@ -127,8 +127,11 @@ public final class SetupWizard extends JDialog {
         + "<ol>"
         + "<li>Go to the Claude Console (address below) and sign up.</li>"
         + "<li>Add credit or billing. This is separate from any Claude, Claude Pro or Claude Code plan.</li>"
-        + "<li>Create a workspace called <b>StoryStage</b> and set a monthly <b>spend limit</b>, so the Prompter can never cost more than you choose.</li>"
-        + "<li>In that workspace, create an <b>API key</b>. If you're offered identity federation, choose "
+        + "<li>Under <b>Settings, Workspaces</b>, create a workspace called <b>StoryStage</b> and set a monthly <b>spend limit</b>, "
+        + "so the Prompter can never cost more than you choose.</li>"
+        + "<li>Create an <b>API key</b> with <b>Scope</b> set to the StoryStage workspace, and a name such as storystage-home-pc. "
+        + "Choose when it expires (30 or 90 days is sensible); when it does, create a new key and run Set up again. "
+        + "If you're offered identity federation, choose "
         + "<b>Continue with an API key</b>: federation is for cloud servers, not for apps on your computer.</li>"
         + "<li>Copy the key straight away: the Console shows it only once. Paste it only into StoryStage.</li>"
         + "</ol>"), BorderLayout.CENTER);

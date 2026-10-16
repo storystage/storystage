@@ -138,7 +138,7 @@ public final class PrompterConversation {
       try {
         message = this.stream(mode, listener);
       } catch (UnauthorizedException e) {
-        return this.finish(listener, Outcome.KEY_REJECTED, "Your Claude key isn't working. Open set-up to check it.");
+        return this.finish(listener, Outcome.KEY_REJECTED, "Your Claude key isn't working. It may have expired or been removed: create a new key in the Claude Console and run Set up again.");
       } catch (PermissionDeniedException e) {
         return this.finish(listener, Outcome.NO_ACCESS, "Your Claude key can't use the Prompter's model, or the account has run out of credit.");
       } catch (RateLimitException e) {
