@@ -36,6 +36,7 @@ public final class PrompterPanelComposite extends SimpleComposite<BorderPanel> {
   private final JEditorPane setupText = new JEditorPane("text/html", "");
   private final JButton setUpButton = new JButton("Set up...");
   private final JButton removeKeyButton = new JButton("Remove key");
+  private final JButton privacyButton = new JButton("What is sent?");
   private final CardLayout cards = new CardLayout();
   private final JPanel cardPanel = new JPanel(this.cards);
   private PrompterChatPanel chat;
@@ -52,6 +53,7 @@ public final class PrompterPanelComposite extends SimpleComposite<BorderPanel> {
       this.refresh();
     });
     this.removeKeyButton.addActionListener(e -> this.removeKey());
+    this.privacyButton.addActionListener(e -> PrivacyNotice.show(this.cardPanel));
   }
 
   /** The chat card, once created, for connecting spoken steps. */
@@ -77,10 +79,15 @@ public final class PrompterPanelComposite extends SimpleComposite<BorderPanel> {
     JPanel keyRow = new JPanel(new FlowLayout(FlowLayout.LEFT, 4, 4));
     keyRow.add(this.setUpButton);
     keyRow.add(this.removeKeyButton);
+    JPanel privacyRow = new JPanel(new FlowLayout(FlowLayout.LEFT, 4, 0));
+    privacyRow.add(this.privacyButton);
+    JPanel bottom = new JPanel(new BorderLayout());
+    bottom.add(keyRow, BorderLayout.PAGE_START);
+    bottom.add(privacyRow, BorderLayout.PAGE_END);
 
     JPanel content = new JPanel(new BorderLayout());
     content.add(this.cardPanel, BorderLayout.CENTER);
-    content.add(keyRow, BorderLayout.PAGE_END);
+    content.add(bottom, BorderLayout.PAGE_END);
     BorderPanel rv = new BorderPanel(this);
     rv.addCenterComponent(new SwingAdapter(content));
     return rv;

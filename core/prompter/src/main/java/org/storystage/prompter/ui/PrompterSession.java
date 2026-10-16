@@ -86,6 +86,7 @@ final class PrompterSession {
     PrompterConversation.Mode effective = this.policy.isExplainOnly() ? PrompterConversation.Mode.EXPLAIN_ONLY : mode;
     String projectText = ProjectText.render(current, this.ids);
     this.tools.clearCommittedEdits();
+    this.tools.setRequestExplainOnly(effective == PrompterConversation.Mode.EXPLAIN_ONLY);
     PrompterConversation c = this.conversation;
     this.worker.submit(() -> c.send(request, projectText, null, effective, new PrompterConversation.Listener() {
       @Override

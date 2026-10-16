@@ -160,10 +160,10 @@ Each package lists its objective, tasks, deliverables and the check that closes 
 **Done when:** each step of a multi-step request is spoken as it is applied, and can be stopped.
 
 ### WP12: Safety, privacy and teaching controls
-- [ ] 12.1 Consent and data notice in the wizard and the Prompter panel. (C)
-- [ ] 12.2 "Explain only" mode, and a teacher setting to restrict to it. (C)
-- [ ] 12.3 System prompt guidance for a young audience, plus refusal handling surfaced politely. (C)
-- [ ] 12.4 Privacy notice text for the website. (C draft; U approves)
+- [x] 12.1 Consent and data notice in the wizard and the Prompter panel. (C)
+- [x] 12.2 "Explain only" mode, and a teacher setting to restrict to it. (C)
+- [x] 12.3 System prompt guidance for a young audience, plus refusal handling surfaced politely. (C)
+- [ ] 12.4 Privacy notice text for the website. (C draft; U approves) *Draft in docs/privacy.md, waiting for approval.*
 
 ### WP13: Testing and quality
 - [ ] 13.1 Unit tests (executor, schemas, key store, switches, TTS queue). (C)
