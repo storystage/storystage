@@ -54,6 +54,9 @@ public final class SelfTest {
   public static void main(String[] args) throws Exception {
     // A previous killed run must not stop this one with Alice's "did not close" message.
     System.setProperty("org.alice.stageide.isCrashDetectionDesired", "false");
+    // Open in the scene set-up view: the code view's Scene tab icon renders an off-screen
+    // thumbnail, which hangs on machines without a GPU, such as CI runners.
+    System.setProperty("org.alice.ide.IDE.isScenePerspectiveDesiredByDefault", "true");
     if ("true".equalsIgnoreCase(System.getenv("CI"))) {
       // On a CI machine nobody can click the licence prompts. Elsewhere they show as usual.
       Preferences.userRoot().node("/org/lgna/project").putBoolean("isLicenseAccepted", true);
