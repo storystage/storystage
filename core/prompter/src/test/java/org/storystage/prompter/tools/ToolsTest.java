@@ -80,4 +80,13 @@ public class ToolsTest {
     assertFalse(result.isOk());
     assertTrue(result.getJson().contains("not_allowed_here"));
   }
+
+  @Test
+  public void learnersExplainOnlyChoiceRefusesChanges() {
+    WorldTools tools = new WorldTools(new NodeIds(), GalleryCatalog.of(Collections.emptyMap()), false);
+    tools.setRequestExplainOnly(true);
+    ToolExecutor.Result result = tools.execute(ToolSchemas.SET_PROPERTY, JsonValue.from(Map.of("target", "x")));
+    assertFalse(result.isOk());
+    assertTrue(result.getJson().contains("chose Explain only"));
+  }
 }

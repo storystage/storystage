@@ -21,7 +21,9 @@ import javax.swing.JEditorPane;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
+import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 import javax.swing.event.DocumentEvent;
@@ -55,6 +57,8 @@ public final class SetupWizard extends JDialog {
   private final JLabel checkResult = new JLabel(" ");
   private final JCheckBox voiceInput = new JCheckBox("Let me talk to the Prompter (voice input)");
   private final JCheckBox spokenSteps = new JCheckBox("Read the Prompter's steps aloud");
+  private final JCheckBox agree = new JCheckBox("<html>I have read this. The Claude account belongs to an adult (18 or over), "
+      + "and they agree to requests and code being sent to Anthropic.</html>");
   private int page = 0;
   private boolean keyChecked = false;
   private boolean completed = false;
@@ -102,14 +106,17 @@ public final class SetupWizard extends JDialog {
   }
 
   private JComponent createAboutPage() {
-    return text("<h2>What the Prompter does</h2>"
+    JEditorPane about = text("<h2>What the Prompter does</h2>"
         + "<p>The Prompter builds scenes and code from what you type or say, using ordinary StoryStage blocks you can change or undo.</p>"
-        + "<p><b>What is sent to Anthropic:</b> your request, your world's code and, if you allow it, a picture of the scene. "
-        + "It goes from this computer to Anthropic under your own Claude account. StoryStage itself runs no servers.</p>"
-        + "<p><b>What is never sent:</b> recordings of your voice (speech is turned into text on this computer), your files, "
-        + "or your key to anyone but Anthropic.</p>"
-        + "<p><b>Cost:</b> a typical request costs about 7 cents (US) on your Claude account.</p>"
+        + PrivacyNotice.html()
         + "<p><b>The Claude account must belong to an adult (18 or over):</b> a parent, teacher or school.</p>");
+    about.setCaretPosition(0);
+    JPanel panel = new JPanel(new BorderLayout(0, 8));
+    panel.add(new JScrollPane(about, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER), BorderLayout.CENTER);
+    // Consent (spec 02 §1): set-up can't go on until it is given.
+    this.agree.addActionListener(e -> this.updateButtons());
+    panel.add(this.agree, BorderLayout.PAGE_END);
+    return panel;
   }
 
   private JComponent createAccountPage() {
@@ -265,7 +272,7 @@ public final class SetupWizard extends JDialog {
   private void updateButtons() {
     this.backButton.setEnabled(this.page > 0);
     this.nextButton.setText(this.page == PAGES.length - 1 ? "Finish" : "Next");
-    this.nextButton.setEnabled(this.page != 2 || this.keyChecked);
+    this.nextButton.setEnabled(this.page == 0 ? this.agree.isSelected() : this.page != 2 || this.keyChecked);
     this.getRootPane().setDefaultButton(this.nextButton);
   }
 }

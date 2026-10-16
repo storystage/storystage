@@ -82,6 +82,7 @@ public final class WorldTools implements ToolExecutor {
   private final NodeIds ids;
   private final GalleryCatalog gallery;
   private final boolean explainOnly;
+  private volatile boolean requestExplainOnly;
   private final List<Edit> committed = new ArrayList<>();
 
   public WorldTools(NodeIds ids, GalleryCatalog gallery, boolean explainOnly) {
@@ -95,6 +96,11 @@ public final class WorldTools implements ToolExecutor {
     return new ArrayList<>(this.committed);
   }
 
+  /** Set for each request: true when the learner chose "Explain only" for it. */
+  public void setRequestExplainOnly(boolean requestExplainOnly) {
+    this.requestExplainOnly = requestExplainOnly;
+  }
+
   public synchronized void clearCommittedEdits() {
     this.committed.clear();
   }
@@ -104,6 +110,9 @@ public final class WorldTools implements ToolExecutor {
     JsonNode in = Json.tree(input);
     if (this.explainOnly && !READ_ONLY_TOOLS.contains(toolName)) {
       return Result.error("not_allowed_here", "The Prompter is set to explain only; it can't change the world.");
+    }
+    if (this.requestExplainOnly && !READ_ONLY_TOOLS.contains(toolName)) {
+      return Result.error("not_allowed_here", "The learner chose Explain only for this request; explain instead of changing the world.");
     }
     AtomicReference<Result> result = new AtomicReference<>();
     Runnable work = () -> result.set(this.executeOnSwingThread(toolName, in));
