@@ -31,10 +31,11 @@ mkdir -p "$STAGE/input" "$STAGE/javafx" "$OUT"
 
 # Classpath jars, with JavaFX kept apart for the module path.
 cp "$MAIN_JAR" "$STAGE/input/"
-for jar in "$LIB"/*.jar; do
-  case "$(basename "$jar")" in
-    javafx-*) cp "$jar" "$STAGE/javafx/" ;;
-    *) cp "$jar" "$STAGE/input/" ;;
+# Non-jar files (for example FlatLaf's Windows DLL) must sit beside their jars.
+for file in "$LIB"/*; do
+  case "$(basename "$file")" in
+    javafx-*) cp "$file" "$STAGE/javafx/" ;;
+    *) cp "$file" "$STAGE/input/" ;;
   esac
 done
 
