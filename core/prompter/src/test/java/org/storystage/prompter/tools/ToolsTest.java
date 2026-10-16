@@ -107,4 +107,12 @@ public class ToolsTest {
     assertSame(lambda.body.getValue(), body);
     assertEquals(null, WorldTools.listenerBody(new ExpressionStatement(new ThisExpression())));
   }
+
+  @Test
+  public void enumResourceClassesBecomeGalleryIds() {
+    Map<String, org.alice.stageide.modelresource.EnumConstantResourceKey> out = new java.util.LinkedHashMap<>();
+    GalleryCatalog.addConstants(org.lgna.story.resources.prop.AcaciaTreeResource.class, "Prop/Tree", out);
+    // A resource with one model gets the path itself as its id.
+    assertEquals(List.of("Prop/Tree"), List.copyOf(out.keySet()));
+  }
 }

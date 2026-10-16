@@ -96,6 +96,10 @@ public final class SelfTest {
     NodeIds ids = new NodeIds();
     GalleryCatalog gallery = GalleryCatalog.load();
     this.check("gallery has models", gallery.ids().size() > 10, gallery.ids().size() + " models");
+    log("first gallery ids: " + gallery.ids().subList(0, Math.min(5, gallery.ids().size())));
+    if (gallery.isEmpty()) {
+      throw new IllegalStateException("The gallery catalog is empty, so nothing can be added.");
+    }
     String prompt = SystemPrompt.build(ApiCatalog.render(), gallery.render());
     this.check("system prompt built", prompt.length() > 5_000, prompt.length() + " characters");
 
