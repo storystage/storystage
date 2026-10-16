@@ -30,6 +30,9 @@ public final class ScenePicture {
 
   /** The scene as JPEG bytes, or null if it can't be captured. Call on the Swing thread. */
   public static byte[] capture() {
+    if (!ThumbnailGenerator.isOffscreenRenderingAllowed()) {
+      return null;
+    }
     try {
       if (generator == null) {
         generator = new ThumbnailGenerator(WIDTH, HEIGHT);
