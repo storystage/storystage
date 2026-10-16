@@ -143,11 +143,13 @@ Each package lists its objective, tasks, deliverables and the check that closes 
 **Done when:** the UX spec's states are all reachable, and the manual test script passes.
 
 ### WP10: Speech input
-- [ ] 10.1 whisper.cpp binding (Java JNI library or bundled executable) with Windows natives in the bundle. (C)
-- [ ] 10.2 Model download on first use (tiny/base), with a progress bar and a checksum. (C)
-- [ ] 10.3 Microphone capture at 16 kHz mono while push-to-talk is held; transcript placed in the input box for editing. (C)
+- [x] 10.1 whisper.cpp binding (Java JNI library or bundled executable) with Windows natives in the bundle. (C)
+- [x] 10.2 Model download on first use (tiny/base), with a progress bar and a checksum. (C)
+- [x] 10.3 Microphone capture at 16 kHz mono while push-to-talk is held; transcript placed in the input box for editing. (C)
 
 **Done when:** a spoken request on the owner's PC is transcribed with no network use apart from the one-off model download. (U test)
+
+*Checked on 16 Oct 2026 on the development PC (2 cores, 4 GB):* the tiny model downloaded and passed its checksum in 24 s, loaded in 7 s and transcribed a 4.5 s request in 4 s. "Send when I stop talking" waits until after TR1.
 
 ### WP11: Speech output
 - [x] 11.1 TTS interface; Windows voice provider (System.Speech/SAPI, UK English voice preferred). (C)
