@@ -23,6 +23,7 @@ public final class ToolSchemas {
   public static final String SET_PROPERTY = "set_property";
   public static final String INSERT_STATEMENT = "insert_statement";
   public static final String INSERT_CONTROL = "insert_control";
+  public static final String ADD_EVENT_LISTENER = "add_event_listener";
 
   private ToolSchemas() {
     throw new AssertionError();
@@ -64,6 +65,16 @@ public final class ToolSchemas {
             "position", integer("0 for first, or -1 for the end."),
             "kind", enm("The kind of block.", "do_in_order", "do_together", "count"),
             "count", integer("Times to repeat, for count; otherwise 0."),
+            "narration", str("One short sentence describing the change, read aloud."))));
+    rv.add(tool(ADD_EVENT_LISTENER, "Add an event to the scene's initializeEventListeners, such as when an object is clicked. "
+            + "The result's ids.block is the parent_block for the blocks that run when it happens (not for move_with_arrow_keys). "
+            + "key_press and arrow_key run for any key; StoryStage can't yet check which one.",
+        props("kind", enm("The kind of event.", "mouse_click_on_object", "mouse_click_on_screen", "key_press", "arrow_key",
+                "move_with_arrow_keys", "time", "proximity_enter", "collision_start"),
+            "objects", arr(str("An object name like cat."), "mouse_click_on_object: which objects (empty for any); move_with_arrow_keys: the one object; "
+                + "proximity_enter and collision_start: the first group. Otherwise empty."),
+            "other_objects", arr(str("An object name like dog."), "proximity_enter and collision_start: the second group. Otherwise empty."),
+            "number", num("time: seconds between runs; proximity_enter: distance in metres; otherwise -1."),
             "narration", str("One short sentence describing the change, read aloud."))));
     return rv;
   }

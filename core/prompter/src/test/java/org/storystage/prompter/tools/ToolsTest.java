@@ -6,10 +6,18 @@ package org.storystage.prompter.tools;
 import com.anthropic.core.JsonValue;
 import com.anthropic.models.messages.Tool;
 import org.junit.Test;
+import org.lgna.project.ast.AstUtilities;
+import org.lgna.project.ast.BlockStatement;
+import org.lgna.project.ast.ExpressionStatement;
+import org.lgna.project.ast.LambdaExpression;
+import org.lgna.project.ast.ThisExpression;
+import org.lgna.project.ast.UserLambda;
 import org.lgna.story.Color;
 import org.lgna.story.MoveDirection;
 import org.lgna.story.SMovableTurnable;
 import org.lgna.story.SQuadruped;
+import org.lgna.story.ast.EventListenerMethodUtilities;
+import org.lgna.story.event.MouseClickOnObjectListener;
 import org.storystage.prompter.claude.ToolExecutor;
 import org.storystage.prompter.context.NodeIds;
 
@@ -29,7 +37,7 @@ public class ToolsTest {
   @Test
   public void schemasAreStrictAndComplete() {
     List<Tool> all = ToolSchemas.tools(false);
-    assertEquals(6, all.size());
+    assertEquals(7, all.size());
     for (Tool t : all) {
       assertTrue(t.name() + " is strict", t.strict().orElse(false));
       assertTrue(t.name() + " streams its input", t.eagerInputStreaming().orElse(false));
@@ -88,5 +96,15 @@ public class ToolsTest {
     ToolExecutor.Result result = tools.execute(ToolSchemas.SET_PROPERTY, JsonValue.from(Map.of("target", "x")));
     assertFalse(result.isOk());
     assertTrue(result.getJson().contains("chose Explain only"));
+  }
+
+  @Test
+  public void listenerBodyIsFoundForParentBlock() {
+    UserLambda lambda = AstUtilities.createUserLambda(MouseClickOnObjectListener.class);
+    ExpressionStatement listener = AstUtilities.createMethodInvocationStatement(new ThisExpression(),
+        EventListenerMethodUtilities.ADD_MOUSE_CLICK_ON_OBJECT_LISTENER_METHOD, new LambdaExpression(lambda));
+    BlockStatement body = WorldTools.listenerBody(listener);
+    assertSame(lambda.body.getValue(), body);
+    assertEquals(null, WorldTools.listenerBody(new ExpressionStatement(new ThisExpression())));
   }
 }

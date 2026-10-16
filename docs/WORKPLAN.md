@@ -129,7 +129,7 @@ Each package lists its objective, tasks, deliverables and the check that closes 
 - [x] 8.1 Tool executor framework: validate input, look up nodes by UUID, build the edit, commit through `UserActivity`, return a result or error. (C)
 - [x] 8.2 `add_model` and `set_property` (scene setup via `DeclareGalleryFieldEdit` and setup statements). (C)
 - [x] 8.3 `insert_statement` (procedures with keyed details such as duration). (C)
-- [ ] 8.4 `declare_procedure` and `add_event_listener`. (C; TR1 covers simple cases)
+- [ ] 8.4 `declare_procedure` and `add_event_listener`. (C; TR1 covers simple cases) *`add_event_listener` done; `declare_procedure` after TR1.*
 - [x] 8.5 `explain` and block highlighting. (C)
 - [x] 8.6 Multi-step request handling: one Project History group per request, so a whole request can be undone. (C)
 

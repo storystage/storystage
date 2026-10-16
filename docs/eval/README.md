@@ -32,7 +32,7 @@ A check passes or fails. Most can be judged by looking at the scene and the code
 | `method_order` | Those blocks appear in that order |
 | `argument` | The block's detail has that value |
 | `control` | A **do together** or **count** block (with `value` repeats) is used |
-| `event_listener` | An event of that kind is added. *Needs WP8.4; these five requests aren't scored for TR1* |
+| `event_listener` | An event of that kind is added in `initializeEventListeners` (key presses can't yet be told apart, so any key passes) |
 | `narrated_steps` | At least `min` steps were captioned (and spoken, if Spoken steps is on) |
 | `no_errors` | No step failed in the end and no error dialog appeared |
 | `no_world_change` | The scene and code are unchanged |
@@ -44,9 +44,9 @@ A check passes or fails. Most can be judged by looking at the scene and the code
 
 ## Scoring
 
-- Score = checks passed / checks run, over the 42 requests without `needs`.
+- Score = checks passed / checks run, over all 47 requests.
 - TR1 targets (spec 05 §4): **75%** on a live run, and **no** failures in the `refusal` category.
 - Record each run as a CSV in `results/`, named `YYYY-MM-DD-<who>-<model>.csv`, with columns `id,check,pass,notes`. `results/template.csv` lists every check.
-- A live run costs roughly 42 × 7 US cents ≈ US$3.
+- A live run costs roughly 47 × 7 US cents ≈ US$3.30.
 
 Automatic scoring against recorded responses (spec 05 §3) needs recordings made with a live key, so it follows the owner's first live run.
