@@ -3,6 +3,7 @@
  */
 package org.storystage.prompter.tools;
 
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import org.alice.stageide.modelresource.ClassResourceKey;
 import org.alice.stageide.modelresource.EnumConstantResourceKey;
 import org.alice.stageide.modelresource.ResourceKey;
@@ -31,10 +32,19 @@ public final class GalleryCatalog {
   /** The gallery as installed with this copy of StoryStage. Call on the Swing thread. */
   public static GalleryCatalog load() {
     Map<String, EnumConstantResourceKey> map = new LinkedHashMap<>();
+    GalleryResourceTreeNode root;
     try {
-      collect(StorytellingResourcesTreeUtils.INSTANCE.getGalleryTree(), new ArrayList<>(), map);
+      root = StorytellingResourcesTreeUtils.INSTANCE.getGalleryTree();
     } catch (RuntimeException e) {
-      // No gallery (for example in a test run): the catalog is simply empty.
+      // No gallery (for example in a unit test run): the catalog is simply empty.
+      Logger.throwable(e, "StoryStage Prompter: no gallery");
+      return new GalleryCatalog(map);
+    }
+    if (root != null) {
+      // The root has no resource of its own (asking for its key fails), as in TreeUtilities.
+      for (GalleryResourceTreeNode child : root.childrenList()) {
+        collect(child, new ArrayList<>(), map);
+      }
     }
     return new GalleryCatalog(map);
   }
@@ -48,10 +58,17 @@ public final class GalleryCatalog {
     if (node == null) {
       return;
     }
-    ResourceKey key = node.getResourceKey();
+    ResourceKey key;
+    try {
+      key = node.getResourceKey();
+    } catch (RuntimeException e) {
+      // One unusual node must not hide the rest of the gallery.
+      Logger.throwable(e, "StoryStage Prompter: skipped gallery node", node.getName());
+      key = null;
+    }
     List<String> here = path;
     String name = node.getName();
-    if (name != null && !name.isEmpty() && node.getParent() != null) {
+    if (name != null && !name.isEmpty()) {
       here = new ArrayList<>(path);
       here.add(name.replace('/', '-'));
     }
