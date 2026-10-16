@@ -60,15 +60,15 @@ Each package lists its objective, tasks, deliverables and the check that closes 
 
 ### WP1: Technical specification
 **Objective:** a specification precise enough to build and test against.
-- [ ] 1.1 Architecture: new Maven module `core/prompter` (AI code only), and the hooks it needs in `core/ide` (panel slot, preferences, menu items). (C)
-- [ ] 1.2 Tool contract: JSON schemas (`strict: true`, enums from the catalog), with error and result formats for `add_model`, `set_property`, `insert_statement`, `declare_procedure`, `add_event_listener`, `explain`, and narration fields. (C)
-- [ ] 1.3 Context contract: catalog extraction, gallery list, Tweedle project text, screenshot format, cache breakpoints, token budget. (C)
-- [ ] 1.4 Claude request design: system prompt, "show me how" vs "build it" modes, model and effort, streaming, the stop button, refusal and fallback handling, error and retry rules. (C)
-- [ ] 1.5 Key and privacy design: wizard pages, credential store library, what is stored where, consent text, data-flow description for the website privacy notice. (C)
-- [ ] 1.6 Speech design: whisper.cpp binding and model download, audio capture, the TTS interface, the Windows/macOS/Linux voices, the Flite fallback, captions. (C)
-- [ ] 1.7 Off switches: preference keys, the admin lock file location and format, module-absent behaviour. (C)
-- [ ] 1.8 UX specification: panel layout, states, wording in theatre vocabulary, accessibility (keyboard, captions). (C)
-- [ ] 1.9 Test strategy: unit, fake-server integration, an evaluation set of 40+ student-style requests, the manual test script. (C)
+- [x] 1.1 Architecture: new Maven module `core/prompter` (AI code only), and the hooks it needs in `core/ide` (panel slot, preferences, menu items). (C)
+- [x] 1.2 Tool contract: JSON schemas (`strict: true`, enums from the catalog), with error and result formats for `add_model`, `set_property`, `insert_statement`, `declare_procedure`, `add_event_listener`, `explain`, and narration fields. (C)
+- [x] 1.3 Context contract: catalog extraction, gallery list, Tweedle project text, screenshot format, cache breakpoints, token budget. (C)
+- [x] 1.4 Claude request design: system prompt, "show me how" vs "build it" modes, model and effort, streaming, the stop button, refusal and fallback handling, error and retry rules. (C)
+- [x] 1.5 Key and privacy design: wizard pages, credential store library, what is stored where, consent text, data-flow description for the website privacy notice. (C)
+- [x] 1.6 Speech design: whisper.cpp binding and model download, audio capture, the TTS interface, the Windows/macOS/Linux voices, the Flite fallback, captions. (C)
+- [x] 1.7 Off switches: preference keys, the admin lock file location and format, module-absent behaviour. (C)
+- [x] 1.8 UX specification: panel layout, states, wording in theatre vocabulary, accessibility (keyboard, captions). (C)
+- [x] 1.9 Test strategy: unit, fake-server integration, an evaluation set of 40+ student-style requests, the manual test script. (C)
 - [ ] 1.10 Review of the spec. (U, optional: work continues unless the owner objects)
 
 **Deliverable:** `docs/spec/` (one file per section). **Done when:** each later WP can cite the section it implements.
