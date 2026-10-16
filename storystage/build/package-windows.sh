@@ -77,4 +77,12 @@ cp -r "$STAGE/javafx" "$OUT/$NAME/app/javafx"
 cp -r "$DIST" "$OUT/$NAME/app/distribution"
 cp "$ROOT/License.txt" "$ROOT/NOTICE" "$OUT/$NAME/"
 
+# The Prompter needs HTTPS (jdk.crypto.ec), the model download (java.net.http) and audio (java.desktop).
+for module in java.desktop java.net.http jdk.crypto.ec; do
+  if ! grep -q "$module" "$OUT/$NAME/runtime/release"; then
+    echo "The packaged runtime is missing $module" >&2
+    exit 1
+  fi
+done
+
 echo "Packaged $OUT/$NAME"
