@@ -121,7 +121,7 @@ Each package lists its objective, tasks, deliverables and the check that closes 
 - [x] 7.1 API catalog extractor (classinfos + annotations, PRIME_TIME only), built at start-up. (C)
 - [x] 7.2 Gallery catalog (resource enums: class names, display names, categories). (C)
 - [x] 7.3 Project-to-Tweedle text using the existing encoder, with size limits. (C)
-- [ ] 7.4 Scene screenshot via the renderer's image capture, downscaled. (C)
+- [x] 7.4 Scene screenshot via the renderer's image capture, downscaled. (C) *640 x 360 JPEG from Alice's ThumbnailGenerator; off unless the learner allows it.*
 
 **Done when:** a sample world's context fits the token budget defined in 1.3.
 

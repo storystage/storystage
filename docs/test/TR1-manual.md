@@ -36,11 +36,12 @@ Never paste the key anywhere except the StoryStage set-up wizard.
 |---|---|---|---|
 | C1 | Tick **Use the StoryStage Prompter**. | The set-up wizard opens. | |
 | C2 | Page 1: read it. Try **Next** before ticking the agreement. | **Next** works only after the agreement is ticked. The text says what is sent and what never is. | |
-| C3 | Page 2. | The steps and the Console address `https://platform.claude.com`, which can be copied. | |
+| C3 | Page 2. | The steps and the Console address `https://platform.claude.com`, which can be copied. The steps match what the Console shows, including the identity federation prompt (choose **Continue with an API key**). | |
 | C4 | Page 3: type `hello` and press **Check key**. | "That doesn't look like a Claude API key." **Next** stays off. | |
 | C5 | Paste a real key with a typo added. **Check key**. | "That key wasn't accepted." | |
+| C5b | (Before C6) In the Console, the key's **Scope** is the StoryStage workspace and its expiry is noted: ______. | The key shows under that workspace. | |
 | C6 | Paste your real key. **Show key**, then hide it again. **Check key**. | Key works; **Next** turns on. | |
-| C7 | Page 4: tick both options. **Finish**. | The Prompter panel appears beside the code editor, with a greeting. | |
+| C7 | Page 4: tick voice input and spoken steps; leave the scene picture unticked. **Finish**. | The Prompter panel appears beside the code editor, with a greeting. | |
 | C8 | Windows: Control Panel → Credential Manager → Windows Credentials. | An entry for StoryStage. Its value isn't shown in StoryStage anywhere. | |
 | C9 | Cancel test: Preferences → untick the Prompter, tick again. | Panel hides and shows. With a key stored, the wizard doesn't open again. | |
 
@@ -62,6 +63,7 @@ Start each step from a new Grass world unless it says otherwise. Note how long e
 | D10 | "Make it move." (with two objects) | One short clarifying question. | |
 | D11 | **New conversation**, then "What did I just ask you?" | It doesn't remember the earlier conversation. | |
 | D12 | Usage line under the buttons. | An estimate that goes up with each request. Compare with the Console's usage page later. | |
+| D14 | Preferences → tick **Prompter can see a picture of the scene**. Mode Explain only: "What can you see in my scene?" | It describes the objects it can see. Untick it afterwards if you prefer. | |
 | D13 | Turn Wi-Fi off and send a request. | "You're offline, so the Prompter can't help right now..."; StoryStage keeps working. Turn Wi-Fi back on. | |
 
 ## E. Voice

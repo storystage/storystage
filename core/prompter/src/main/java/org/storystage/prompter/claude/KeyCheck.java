@@ -20,7 +20,7 @@ public final class KeyCheck {
   public enum Result {
     OK("Your key works."),
     NOT_A_KEY("That doesn't look like a Claude API key. Keys start with sk-ant-."),
-    REJECTED("That key wasn't accepted. Check you copied all of it, or create a new one."),
+    REJECTED("That key wasn't accepted. Check you copied all of it, and that it hasn't expired, or create a new one."),
     NO_MODEL_ACCESS("That key works but can't use the Claude model StoryStage needs. Check the key's workspace."),
     UNREACHABLE("Couldn't reach Anthropic. Check the internet connection or ask about your school's proxy."),
     FAILED("Something went wrong checking the key. Try again in a minute.");

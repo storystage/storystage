@@ -18,8 +18,10 @@ import org.storystage.prompter.claude.ToolExecutor;
 import org.storystage.prompter.context.ApiCatalog;
 import org.storystage.prompter.context.NodeIds;
 import org.storystage.prompter.context.ProjectText;
+import org.storystage.prompter.context.ScenePicture;
 import org.storystage.prompter.key.KeyStores;
 import org.storystage.prompter.settings.PrompterPolicy;
+import org.storystage.prompter.settings.SceneImagesState;
 import org.storystage.prompter.tools.GalleryCatalog;
 import org.storystage.prompter.tools.ToolSchemas;
 import org.storystage.prompter.tools.WorldTools;
@@ -88,7 +90,9 @@ final class PrompterSession {
     this.tools.clearCommittedEdits();
     this.tools.setRequestExplainOnly(effective == PrompterConversation.Mode.EXPLAIN_ONLY);
     PrompterConversation c = this.conversation;
-    this.worker.submit(() -> c.send(request, projectText, null, effective, new PrompterConversation.Listener() {
+    // The scene picture is sent only when the learner has allowed it (spec 02 §4).
+    byte[] picture = SceneImagesState.getInstance().getValue() && !this.policy.isLockedOff() ? ScenePicture.capture() : null;
+    this.worker.submit(() -> c.send(request, projectText, picture, effective, new PrompterConversation.Listener() {
       @Override
       public void textDelta(String text) {
         SwingUtilities.invokeLater(() -> view.prompterText(text));

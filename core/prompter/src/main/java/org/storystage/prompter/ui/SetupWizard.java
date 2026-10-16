@@ -7,6 +7,7 @@ import org.storystage.prompter.claude.KeyCheck;
 import org.storystage.prompter.key.ApiKeys;
 import org.storystage.prompter.key.KeyStore;
 import org.storystage.prompter.key.KeyStores;
+import org.storystage.prompter.settings.SceneImagesState;
 import org.storystage.prompter.settings.SpokenStepsState;
 import org.storystage.prompter.settings.VoiceInputState;
 
@@ -57,6 +58,7 @@ public final class SetupWizard extends JDialog {
   private final JLabel checkResult = new JLabel(" ");
   private final JCheckBox voiceInput = new JCheckBox("Let me talk to the Prompter (voice input)");
   private final JCheckBox spokenSteps = new JCheckBox("Read the Prompter's steps aloud");
+  private final JCheckBox sceneImages = new JCheckBox("Let the Prompter see a small picture of the scene (sent to Anthropic)");
   private final JCheckBox agree = new JCheckBox("<html>I have read this. The Claude account belongs to an adult (18 or over), "
       + "and they agree to requests and code being sent to Anthropic.</html>");
   private int page = 0;
@@ -124,9 +126,14 @@ public final class SetupWizard extends JDialog {
     panel.add(text("<h2>Create your Claude account</h2>"
         + "<ol>"
         + "<li>Go to the Claude Console (address below) and sign up.</li>"
-        + "<li>Add credit or billing.</li>"
-        + "<li>Create a workspace called <b>StoryStage</b> and set a monthly <b>spend limit</b>, so the Prompter can never cost more than you choose.</li>"
-        + "<li>In that workspace, create an <b>API key</b> and copy it.</li>"
+        + "<li>Add credit or billing. This is separate from any Claude, Claude Pro or Claude Code plan.</li>"
+        + "<li>Under <b>Settings, Workspaces</b>, create a workspace called <b>StoryStage</b> and set a monthly <b>spend limit</b>, "
+        + "so the Prompter can never cost more than you choose.</li>"
+        + "<li>Create an <b>API key</b> with <b>Scope</b> set to the StoryStage workspace, and a name such as storystage-home-pc. "
+        + "Choose when it expires (30 or 90 days is sensible); when it does, create a new key and run Set up again. "
+        + "If you're offered identity federation, choose "
+        + "<b>Continue with an API key</b>: federation is for cloud servers, not for apps on your computer.</li>"
+        + "<li>Copy the key straight away: the Console shows it only once. Paste it only into StoryStage.</li>"
         + "</ol>"), BorderLayout.CENTER);
     JTextField address = new JTextField(CONSOLE_ADDRESS);
     address.setEditable(false);
@@ -190,8 +197,11 @@ public final class SetupWizard extends JDialog {
     this.spokenSteps.setSelected(SpokenStepsState.getInstance().getValue());
     this.voiceInput.setAlignmentX(LEFT_ALIGNMENT);
     this.spokenSteps.setAlignmentX(LEFT_ALIGNMENT);
+    this.sceneImages.setSelected(SceneImagesState.getInstance().getValue());
+    this.sceneImages.setAlignmentX(LEFT_ALIGNMENT);
     panel.add(this.voiceInput);
     panel.add(this.spokenSteps);
+    panel.add(this.sceneImages);
     return panel;
   }
 
@@ -253,6 +263,7 @@ public final class SetupWizard extends JDialog {
     }
     VoiceInputState.getInstance().setValueTransactionlessly(this.voiceInput.isSelected() && this.voiceInput.isEnabled());
     SpokenStepsState.getInstance().setValueTransactionlessly(this.spokenSteps.isSelected());
+    SceneImagesState.getInstance().setValueTransactionlessly(this.sceneImages.isSelected());
     this.completed = true;
     this.close();
   }
