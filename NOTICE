@@ -1,0 +1,83 @@
+StoryStage
+https://github.com/storystage/storystage
+
+StoryStage is a free, non-commercial fork of Alice 3
+(https://github.com/TheAliceProject/alice3), based on release 3.9.1.0.
+
+
+ALICE 3
+
+This product includes software developed by Carnegie Mellon University.
+
+Alice 3 is Copyright (c) 2006-2019, Carnegie Mellon University. All rights
+reserved. It is distributed under the Alice 3 End User License Agreement,
+reproduced in full in License.txt and in
+core/resources/src/application/resources/EULA_Alice3.txt.
+
+Under that licence, products derived from the software may not be called
+"Alice", nor may "Alice" appear in their name, without prior written
+permission of Carnegie Mellon University. "Based on Alice 3" describes the
+origin of StoryStage and is not part of its name.
+
+
+TWEEDLE
+
+The Tweedle language (tweedle-lang submodule,
+https://github.com/TheAliceProject/tweedle) is Copyright (c) 2006-2019,
+Carnegie Mellon University, under the same Alice 3 End User License
+Agreement.
+
+
+LOOKING GLASS WALK AND TOUCH API
+
+This product includes software developed by Washington University in
+St. Louis.
+
+The Looking Glass Walk and Touch API is Copyright (c) 2008-2014, Washington
+University in St. Louis. All rights reserved. Its licence is reproduced in
+core/resources/src/application/resources/EULA_LookingGlassWalkAndTouch.txt.
+Products derived from it may not be called "Looking Glass", nor may "Looking
+Glass" appear in their name, without prior written permission of Washington
+University in St. Louis.
+
+
+THE SIMS 2 ART ASSETS
+
+This program/product includes art and animations developed by Electronic
+Arts Inc.
+
+The Alice 3.0 gallery of The Sims 2 art assets and animations is provided by
+Electronic Arts Inc. under The Alice 3.0 Art Gallery License, Copyright (c)
+2004 Electronic Arts Inc. All rights reserved. The licence, including its
+conditions and disclaimer, is reproduced in full in
+core-nonfree/resources-nonfree/src/application/resources/EULA_TheSimsTM2ArtAsset.txt
+and must be retained in any redistribution of source code that uses The
+Sims 2 Assets.
+
+The Sims 2 Assets may be used for personal, non-commercial and academic use
+only, and are redistributed without modification. Neither the name of
+Electronic Arts Inc. nor any of its trademarks, including THE SIMS 2, may be
+used to endorse or promote StoryStage.
+
+
+THIRD-PARTY LIBRARIES
+
+StoryStage uses third-party libraries under their own licences, including
+Apache, BSD, MIT, LGPL, Eclipse, CDDL+GPL (NetBeans) and GPL with the
+Classpath Exception (JavaFX). See the Maven pom.xml files and
+src/license/licenses.xml.
+
+
+TRADEMARKS
+
+The name "Alice" is used here only to describe where StoryStage comes from.
+The Sims and THE SIMS 2
+are trademarks of Electronic Arts Inc. Claude is a trademark of Anthropic.
+StoryStage is not affiliated with or endorsed by Carnegie Mellon University,
+Washington University in St. Louis, Electronic Arts Inc. or Anthropic.
+
+
+STORYSTAGE CHANGES
+
+Changes made by the StoryStage project are Copyright (c) 2026 the StoryStage
+contributors.

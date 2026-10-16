@@ -1,143 +1,65 @@
-# Alice 3
+# StoryStage
 
-[Alice](https://www.alice.org) is an innovative block-based programming environment that makes it easy to create animations, build interactive narratives, or program simple games in 3D.
+**Direct your own 3D stories, then code them. Based on Alice 3.**
 
-### Latest Released Build:
+StoryStage is a free, non-commercial fork of [Alice 3](https://www.alice.org/), the block-based 3D programming environment from Carnegie Mellon University. Students build scenes with a cast of characters and props, then bring them to life with code made of drag-and-drop blocks.
 
-[![](https://img.shields.io/badge/3.9.1.0-green.svg)](https://www.alice.org/get-alice/alice-3/)
+StoryStage is planned to add an optional assistant, **the Prompter**, powered by Claude. Students will type or say what they want, and the Prompter will build it from ordinary blocks, one undoable step at a time, reading each step aloud. It will use each user's own Claude API key, and it can be switched off completely.
 
-## Building Alice 3 from the source
+> **Status:** early setup. The `storystage` branch is currently Alice 3.9.1.0 plus these project documents. The Prompter has not been built yet.
 
-Download and install the following build tools
-* [Java 21](https://www.oracle.com/java/technologies/downloads/#java21)
-  * Set $JAVA_HOME accordingly, and add $JAVA_HOME/bin to your PATH
-* [Apache Maven](https://maven.apache.org/install.html) 3.9.9 or later
-* git
-* [git-lfs](https://help.github.com/en/articles/installing-git-large-file-storage)
-* [Install4J 10](https://www.ej-technologies.com/products/install4j/overview.html) (Only required to build the installers)
+Website: [storystage.org.uk](https://storystage.org.uk) (coming soon)
 
----
+## Branches
 
-Clone the Alice 3 repository into a local directory, `${alice3}`
+| Branch | Purpose |
+|---|---|
+| `storystage` | StoryStage development. Start new work from here. |
+| `develop`, `release`, `master` | Kept matching the Alice project, so later Alice releases can be merged in. |
 
-    cd ${alice3}
-    git clone --recurse-submodules https://github.com/TheAliceProject/alice3.git
-    
-Alice 3 uses a submodule for the Tweedle language, the internal representation of Alice code.
-If you do not use the `--recurse-submodules` flag above it can be pulled in explicitly.
+## Getting the code
 
-    git submodule init
-    git submodule update
+You need [Git LFS](https://git-lfs.com/) for the Sims 2 art assets.
 
-To ensure the lfs files are available locally:
+```bash
+git clone --recurse-submodules --branch storystage https://github.com/storystage/storystage.git
+cd storystage
+git remote add upstream https://github.com/TheAliceProject/alice3.git
+git lfs install
+git lfs pull
+```
 
-    git lfs pull 
+The Sims 2 asset bundles add several hundred MB. To skip them, clone with `GIT_LFS_SKIP_SMUDGE=1` and build without them (below).
 
-Compile the code, build the jars, and install them in the local mvn repository.
+## Building
 
-    mvn compile install
+Requirements: Java 21 and Maven 3.9.9 or later.
 
-The install step will also build the NetBeans plugin in `{alice3}/netbeans/target/`
+```bash
+mvn compile install
+```
 
-If you want to use Install4J to build the installers add a flag to use the buildInstaller profile:
+To build without the Sims 2 assets (marked experimental by the Alice project):
 
-    mvn -DbuildInstaller=true install
+```bash
+mvn -DincludeSims=false clean install
+```
 
-More information about configuring Install4j can be found [here](https://www.ej-technologies.com/resources/install4j/help/doc/cli/maven.html)
+To run the IDE:
 
-## Executing and testing
+```bash
+cd alice-ide
+mvn exec:java -Dalice-ide
+```
 
-After successfully compiling and installing the Alice jars into the mvn repository, you can launch the Alice IDE
+The original Alice 3 build and IDE set-up notes, including IntelliJ settings, are in [docs/Alice3-README.md](docs/Alice3-README.md).
 
-    cd alice-ide
-    mvn exec:java -Dalice-ide
+## Licence and credits
 
-Run unit tests
+StoryStage is distributed under the Alice 3 End User License Agreement in [License.txt](License.txt). The required notices and credits are in [NOTICE](NOTICE).
 
-    cd ${alice3}
-    mvn test
+- This product includes software developed by Carnegie Mellon University.
+- This product includes software developed by Washington University in St. Louis.
+- This program/product includes art and animations developed by Electronic Arts Inc.
 
-## Installing Git Hooks
-
-The hooks directory contains Git hooks, that should be placed in .git/hooks
-
-Here's an example command to copy the pre-push hook:
-
-    cp hooks/pre-push .git/hooks/pre-push
-
-## IDE
-**IntelliJ IDEA** is suggested for coding/building Alice 3. There is a free community edition
-or JetBrains offers a product pack for students using an edu email address [here](https://www.jetbrains.com/community/education/#students
-).
-
-### Build with IntelliJ
-
-**Alice 3 builds with Java 21** which should be installed and selected in place of IntelliJ's bundled JDK.
-
-IntelliJ IDEA has a bundled maven.
-* The location is set in:
-  * *File -> Settings -> Build, Execution, Deployment -> Build Tools -> Maven*
-* To build with maven using **build project** in the IDE first check the "Delegate IDE build/run actions to Maven" option in
-  * *File -> Settings -> Build, Execution, Deployment -> Build Tools -> Maven -> Runner*
-
-### Run with IntelliJ
-After the project is built successfully. You can create a Run/Debug Configuration and run the project.
-In the **Run/Debug Configurations** window, create a new **Application** configuration and enter lines as bellow.
-![New Application Configuration](docs/images/IDELaunchAlice.png)
-The working directory should be the root directory where you checked the Alice 3 project out, `${alice3}`.
-
-The VM options are:
-
-    -ea
-    -splash:"./installer/installerFiles/SplashScreen.png"
-    -Xmx1024m
-    -Dswing.aatext=true
-    -Dorg.alice.ide.rootDirectory="./core/resources/target/distribution"
-    -Dcom.apple.mrj.application.apple.menu.about.name=Alice3
-    -Dedu.cmu.cs.dennisc.java.util.logging.Logger.Level=WARNING
-    -Dorg.alice.ide.internalTesting=true
-    -Dorg.lgna.croquet.Element.isIdCheckDesired=true
-    -Djogamp.gluegen.UseTempJarCache=false
-    -Dorg.alice.stageide.isCrashDetectionDesired=false
-    -Dsun.java2d.cmm=sun.java2d.cmm.kcms.KcmsServiceProvider
-    --add-opens=java.base/java.io=ALL-UNNAMED
-    --add-opens=java.desktop/sun.awt=ALL-UNNAMED
-    --add-opens=java.base/java.time=ALL-UNNAMED
-
-Then the project should be ready to run.
-
-Final note: If you were delegating IDE build/run actions to Maven in the previous step, please uncheck that option. Or you might run into some graphics errors running Alice.
-
-## Working without the Sims*
-
-The compile, package, and install phases can all be limited to not include the Sims assets.
-To do that disable the `includeSims` maven profile.
-
-It is a good idea to `clean` if you have previously made a full build.
-This may prevent leftover Sims artifacts getting bundled in.
-
-    cd ${alice3}
-    mvn -DincludeSims=false -Dinstall4j.skip clean package
-Or:
-
-    cd ${alice3}
-    mvn -DincludeSims=false clean install
-
-
-**This is still experimental, so there may be errors.*
-
-## How to contribute
-
-We appreciate contributions from the Alice community.
-
-To make it easier to merge in new work, when submitting PRs please:
-* Keep each one small and focused
-* Make individual commits of smaller chunks with clear descriptions
-* Follow the established coding style
-
-### Development tools
-
-This repository previously included a number of projects that were experiments, test beds, and development aids.
-
-They have been relocated to the [Alice 3 Tools](https://github.com/TheAliceProject/alice3-tools) repo.
-(NB If you are looking for historic versions of any of those projects, the richer git history is in this repo. The history did not migrate due to the way filter-branch was applied.)
+StoryStage is not affiliated with or endorsed by Carnegie Mellon University, Washington University in St. Louis, Electronic Arts Inc. or Anthropic.
