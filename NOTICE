@@ -67,6 +67,11 @@ Apache, BSD, MIT, LGPL, Eclipse, CDDL+GPL (NetBeans) and GPL with the
 Classpath Exception (JavaFX). See the Maven pom.xml files and
 src/license/licenses.xml.
 
+The StoryStage Prompter module (core/prompter) adds: the Anthropic Java SDK
+(com.anthropic:anthropic-java, MIT licence) with OkHttp and Kotlin standard
+library (Apache 2.0); java-keyring (BSD 3-Clause) with JNA (Apache 2.0 or
+LGPL 2.1), secret-service and jkeychain for the OS credential stores.
+
 
 TRADEMARKS
 

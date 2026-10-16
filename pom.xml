@@ -412,18 +412,21 @@
       <dependency>
         <groupId>com.fasterxml.jackson.core</groupId>
         <artifactId>jackson-databind</artifactId>
-        <version>2.17.1</version>
+        <!-- StoryStage: 2.18 to match jackson-core and the Claude Java SDK -->
+        <version>2.18.6</version>
       </dependency>
       <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.datatype/jackson-datatype-jdk8 -->
       <dependency>
         <groupId>com.fasterxml.jackson.datatype</groupId>
         <artifactId>jackson-datatype-jdk8</artifactId>
-        <version>2.17.1</version>
+        <!-- StoryStage: 2.18 to match jackson-core and the Claude Java SDK -->
+        <version>2.18.6</version>
       </dependency>
       <dependency>
         <groupId>com.fasterxml.jackson.datatype</groupId>
         <artifactId>jackson-datatype-jsr310</artifactId>
-        <version>2.17.1</version>
+        <!-- StoryStage: 2.18 to match jackson-core and the Claude Java SDK -->
+        <version>2.18.6</version>
       </dependency>
 
       <dependency>
