@@ -678,10 +678,15 @@ public class Encoder extends SourceCodeGenerator {
     }
     final String paramType = parameter.getValueType().getName().toLowerCase();
     final String message = "Unable to read label from parameter on method: %s\nUsing the type as label: %s\nGenerated code may contain errors.".formatted(parameter.getCode().toString(), paramType);
+    reportUnlabeledParameter(message);
+    return paramType;
+  }
+
+  /** StoryStage: how an unlabeled parameter is reported; subclasses that run unattended can just log. */
+  protected void reportUnlabeledParameter(String message) {
     //TODO I18n
     Dialogs.showError("Unlabeled parameter", message);
     Logger.errln(message);
-    return paramType;
   }
 
   private int parameterIndex(JavaMethodParameter parameter) {
