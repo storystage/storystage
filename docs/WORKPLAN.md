@@ -53,7 +53,7 @@ Each package lists its objective, tasks, deliverables and the check that closes 
 - [x] 0.2 Secret scanning and push protection on. (C)
 - [x] 0.3 README, NOTICE (CMU, WUSTL, EA credits), original Alice README kept in `docs/`. (C)
 - [x] 0.4 This workplan committed; one GitHub milestone per release and one issue per work package. (C)
-- [x] 0.5 Labels (`wp:*`, `type:bug`, `type:task`, `needs-owner`) and a CONTRIBUTING note on branches and commit style. (C)
+- [x] 0.5 Labels (`work-package`, `type:bug`, `type:task`, `needs-owner`) and a CONTRIBUTING note on branches and commit style. (C)
 - [ ] 0.6 Organisation settings: require 2FA, confirm the Free plan (it currently shows Team), profile name and logo. (U)
 
 **Done when:** every WP has an issue, and work is tracked against milestones.
