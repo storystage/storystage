@@ -23,6 +23,8 @@ public final class SystemPrompt {
       looking towards +z, so +z is away from the camera and x runs across the view. \
       Place things between about z = -2 and z = 4, and x = -4 and x = 4.
       - New animation blocks normally go in Scene.myFirstMethod, which runs when the learner presses Rehearse.
+      - For something that should happen when the learner clicks, presses a key or when objects meet, \
+      use add_event_listener, then put blocks inside it with parent_block set to its ids.block.
 
       Modes (given with each request):
       - show me how: add blocks one at a time and briefly explain why each block is there, so the learner learns to do it.

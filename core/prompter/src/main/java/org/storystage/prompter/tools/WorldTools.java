@@ -25,12 +25,14 @@ import org.lgna.croquet.edits.Edit;
 import org.lgna.croquet.history.UserActivity;
 import org.lgna.project.annotations.ClassTemplate;
 import org.lgna.project.ast.AbstractStatementWithBody;
+import org.lgna.project.ast.AbstractType;
 import org.lgna.project.ast.AccessLevel;
 import org.lgna.project.ast.AstUtilities;
 import org.lgna.project.ast.BlockStatement;
 import org.lgna.project.ast.ConditionalStatement;
 import org.lgna.project.ast.DoInOrder;
 import org.lgna.project.ast.DoTogether;
+import org.lgna.project.ast.DoubleLiteral;
 import org.lgna.project.ast.Expression;
 import org.lgna.project.ast.ExpressionStatement;
 import org.lgna.project.ast.FieldModifierFinalVolatileOrNeither;
@@ -38,20 +40,28 @@ import org.lgna.project.ast.InstanceCreation;
 import org.lgna.project.ast.IntegerLiteral;
 import org.lgna.project.ast.JavaKeyedArgument;
 import org.lgna.project.ast.JavaMethod;
+import org.lgna.project.ast.LambdaExpression;
 import org.lgna.project.ast.ManagementLevel;
 import org.lgna.project.ast.MethodInvocation;
 import org.lgna.project.ast.NamedUserType;
 import org.lgna.project.ast.Node;
+import org.lgna.project.ast.SimpleArgument;
 import org.lgna.project.ast.Statement;
+import org.lgna.project.ast.ThisExpression;
+import org.lgna.project.ast.UserCode;
 import org.lgna.project.ast.UserField;
 import org.lgna.project.ast.UserMethod;
 import org.lgna.project.ast.UserType;
 import org.lgna.story.Color;
 import org.lgna.story.Paint;
+import org.lgna.story.AddMouseClickOnObjectListener;
 import org.lgna.story.Position;
 import org.lgna.story.SMovableTurnable;
+import org.lgna.story.SThing;
 import org.lgna.story.STurnable;
 import org.lgna.story.TurnDirection;
+import org.lgna.story.Visual;
+import org.lgna.story.ast.EventListenerMethodUtilities;
 import org.lgna.story.implementation.alice.AliceResourceUtilities;
 import org.storystage.prompter.claude.Json;
 import org.storystage.prompter.claude.ToolExecutor;
@@ -60,6 +70,7 @@ import org.storystage.prompter.context.NodeIds;
 import org.storystage.prompter.context.ProjectText;
 
 import javax.swing.SwingUtilities;
+import java.lang.reflect.Array;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -146,6 +157,8 @@ public final class WorldTools implements ToolExecutor {
         return this.insertStatement(in);
       case ToolSchemas.INSERT_CONTROL:
         return this.insertControl(in);
+      case ToolSchemas.ADD_EVENT_LISTENER:
+        return this.addEventListener(in);
       default:
         return Result.error("unknown_method", "There's no tool called " + toolName + ".");
       }
@@ -406,6 +419,101 @@ public final class WorldTools implements ToolExecutor {
     return Result.ok(ok(Map.of("ids", Map.of("block", this.ids.idOf(statement)))), text(in, "narration"));
   }
 
+  // ---- add_event_listener ----------------------------------------------------------------
+
+  private Result addEventListener(JsonNode in) throws ToolError, ValueConverter.BadValue {
+    NamedUserType sceneType = StageIDE.getActiveInstance().getSceneType();
+    ValueConverter values = new ValueConverter(sceneType);
+    UserMethod listeners = sceneType.getDeclaredMethod(StageIDE.INITIALIZE_EVENT_LISTENERS_METHOD_NAME);
+    if (listeners == null) {
+      throw new ToolError("unknown_method", "This world has no initializeEventListeners method.");
+    }
+    List<String> objects = strings(in.path("objects"));
+    List<String> others = strings(in.path("other_objects"));
+    double number = number(in, "number", -1);
+    String kind = text(in, "kind");
+    MethodInvocation invocation;
+    switch (kind) {
+    case "mouse_click_on_object":
+      invocation = listen(EventListenerMethodUtilities.ADD_MOUSE_CLICK_ON_OBJECT_LISTENER_METHOD);
+      if (!objects.isEmpty()) {
+        // Only clicks on these objects, like the setOfVisuals detail in the Alice event menu.
+        JavaMethod factory = JavaMethod.getInstance(AddMouseClickOnObjectListener.class, "setOfVisuals", Visual[].class);
+        invocation.keyedArguments.add(new JavaKeyedArgument(invocation.method.getValue().getKeyedParameter(), factory, array(Visual.class, objects, values)));
+      }
+      break;
+    case "mouse_click_on_screen":
+      invocation = listen(EventListenerMethodUtilities.ADD_MOUSE_CLICK_ON_SCREEN_LISTENER_METHOD);
+      break;
+    case "key_press":
+      invocation = listen(EventListenerMethodUtilities.ADD_KEY_LISTENER_METHOD);
+      break;
+    case "arrow_key":
+      invocation = listen(EventListenerMethodUtilities.ADD_ARROW_KEY_PRESS_LISTENER);
+      break;
+    case "move_with_arrow_keys":
+      if (objects.size() != 1) {
+        throw new ToolError("bad_argument", "move_with_arrow_keys needs exactly one object in objects.");
+      }
+      invocation = AstUtilities.createMethodInvocation(new ThisExpression(), EventListenerMethodUtilities.MOVE_WITH_ARROWS, values.objectExpression(objects.get(0), SMovableTurnable.class));
+      break;
+    case "time":
+      invocation = listen(EventListenerMethodUtilities.ADD_TIMER_EVENT_LISTENER_METHOD, new DoubleLiteral(number > 0 ? number : 1.0));
+      break;
+    case "proximity_enter":
+      invocation = listen(EventListenerMethodUtilities.ADD_ENTER_PROXIMITY_LISTENER_METHOD,
+          array(SThing.class, required(objects, "objects"), values), array(SThing.class, required(others, "other_objects"), values), new DoubleLiteral(number > 0 ? number : 1.0));
+      break;
+    case "collision_start":
+      invocation = listen(EventListenerMethodUtilities.ADD_START_COLLISION_LISTENER_METHOD,
+          array(SThing.class, required(objects, "objects"), values), array(SThing.class, required(others, "other_objects"), values));
+      break;
+    default:
+      throw new ToolError("not_allowed_here", "StoryStage can't add a " + kind + " event yet.");
+    }
+    ExpressionStatement statement = new ExpressionStatement(invocation);
+    BlockStatement body = listeners.body.getValue();
+    this.commit(activity -> new InsertStatementEdit<>(activity, new BlockStatementIndexPair(body, InsertStatementEdit.AT_END), statement));
+    return Result.ok(ok(Map.of("ids", Map.of("block", this.ids.idOf(statement)))), text(in, "narration"));
+  }
+
+  /** this.addXListener(empty lambda, more...), as the Alice event menu builds it. */
+  private static MethodInvocation listen(JavaMethod method, Expression... more) {
+    AbstractType<?, ?, ?> listenerType = method.getRequiredParameters().get(0).getValueType();
+    Expression[] args = new Expression[more.length + 1];
+    args[0] = AstUtilities.createLambdaExpression(listenerType);
+    System.arraycopy(more, 0, args, 1, more.length);
+    return AstUtilities.createMethodInvocation(new ThisExpression(), method, args);
+  }
+
+  private static Expression array(Class<?> componentCls, List<String> names, ValueConverter values) throws ValueConverter.BadValue {
+    List<Expression> items = new ArrayList<>();
+    for (String name : names) {
+      items.add(values.objectExpression(name, componentCls));
+    }
+    return AstUtilities.createArrayInstanceCreation(Array.newInstance(componentCls, 0).getClass(), items);
+  }
+
+  private static List<String> required(List<String> names, String field) throws ToolError {
+    if (names.isEmpty()) {
+      throw new ToolError("bad_argument", "This event needs at least one object in " + field + ".");
+    }
+    return names;
+  }
+
+  private static List<String> strings(JsonNode list) {
+    List<String> rv = new ArrayList<>();
+    if (list.isArray()) {
+      for (JsonNode n : list) {
+        String s = n.asText("").trim();
+        if (!s.isEmpty()) {
+          rv.add(s);
+        }
+      }
+    }
+    return rv;
+  }
+
   // ---- shared ----------------------------------------------------------------------------
 
   /** The block to insert into: a control block by id, or a method's body. */
@@ -418,6 +526,10 @@ public final class WorldTools implements ToolExecutor {
       }
       if (node instanceof ConditionalStatement conditional) {
         return conditional.booleanExpressionBodyPairs.get(0).body.getValue();
+      }
+      BlockStatement listenerBody = listenerBody(node);
+      if (listenerBody != null) {
+        return listenerBody;
       }
       throw new ToolError("unknown_block", "There's no control block " + parentId + ". Use an id from the project text or a previous result.");
     }
@@ -434,6 +546,18 @@ public final class WorldTools implements ToolExecutor {
       }
     }
     throw new ToolError("unknown_method", "There's no method " + methodName + ". Use Scene.myFirstMethod or another method in the project.");
+  }
+
+  /** The body of an event listener statement such as this.addMouseClickOnObjectListener(...), or null. */
+  static BlockStatement listenerBody(Node node) {
+    if (node instanceof ExpressionStatement statement && statement.expression.getValue() instanceof MethodInvocation invocation) {
+      for (SimpleArgument argument : invocation.requiredArguments) {
+        if (argument.expression.getValue() instanceof LambdaExpression lambda && lambda.value.getValue() instanceof UserCode code) {
+          return code.getBodyProperty().getValue();
+        }
+      }
+    }
+    return null;
   }
 
   private void commit(Function<UserActivity, Edit> editFactory) {

@@ -107,10 +107,12 @@ Built with: `DeclareMethodEdit`. Result `ids.method`: the `Class.method` name to
 ### `add_event_listener`
 | Field | Type | Notes |
 |---|---|---|
-| `event` | enum `scene_start`, `key_press`, `arrow_key_press`, `mouse_click_on_object`, `time_elapsed`, `collision_start`, `proximity_enter` | |
-| `options` | object, optional | e.g. `{"key": "SPACE"}`, `{"objects": ["cat"]}`, `{"seconds": 2}` |
+| `kind` | enum `mouse_click_on_object`, `mouse_click_on_screen`, `key_press`, `arrow_key`, `move_with_arrow_keys`, `time`, `proximity_enter`, `collision_start` | "When the world starts" already exists and runs `myFirstMethod` |
+| `objects` | list of object names | Clicked objects (empty for any), the object to move with the arrow keys, or the first group for proximity and collision |
+| `other_objects` | list of object names | The second group for proximity and collision; otherwise empty |
+| `number` | number | Seconds between runs for `time`; distance in metres for `proximity_enter`; otherwise -1 |
 | `narration` | string | |
-Built with: the same edits as the **Add Event Listener** menu (`AddEventListenerCascade`). Result `ids.block`: the handler body, for `insert_statement`.
+Built with: the same AST as the **Add Event Listener** menu (`AddEventListenerCascade`): an `InsertStatementEdit` at the end of `initializeEventListeners`, with an empty lambda made by `AstUtilities.createLambdaExpression`. Result `ids.block`: the listener statement; passed as `parent_block`, blocks go into the handler body. TR1 can't check which key was pressed (that needs an `if` with the event's key).
 
 ### `explain`
 No change to the world.
