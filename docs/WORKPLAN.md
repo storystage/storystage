@@ -101,16 +101,16 @@ Each package lists its objective, tasks, deliverables and the check that closes 
 **Done when:** all three levels are covered by tests.
 
 ### WP5: API key wizard and secure storage
-- [ ] 5.1 Croquet wizard: what is sent, cost and adult-account notes, Console steps (account, workspace with spend limit, key), paste key, check key, options. (C)
-- [ ] 5.2 Credential store integration (Windows Credential Manager first, then macOS Keychain and Linux Secret Service). (C)
-- [ ] 5.3 Key check with the Models API (no tokens used); clear error messages. (C)
+- [x] 5.1 Croquet wizard: what is sent, cost and adult-account notes, Console steps (account, workspace with spend limit, key), paste key, check key, options. (C)
+- [x] 5.2 Credential store integration (Windows Credential Manager first, then macOS Keychain and Linux Secret Service). (C)
+- [x] 5.3 Key check with the Models API (no tokens used); clear error messages. (C)
 - [ ] 5.4 Usage counter from response token counts; "Remove key". (C)
 - [ ] 5.5 Key excluded from logs, project files and the issue reporter; tests prove it. (C)
 
 **Done when:** the owner completes the wizard on their PC with their own key. (U: needs an Anthropic Console account and key.)
 
 ### WP6: Claude client
-- [ ] 6.1 Add `com.anthropic:anthropic-java`; client factory using the stored key. (C)
+- [x] 6.1 Add `com.anthropic:anthropic-java`; client factory using the stored key. (C)
 - [ ] 6.2 Streaming requests off the Swing thread; cancel/stop; timeouts and retries. (C)
 - [ ] 6.3 Prompt caching of the catalog; refusal handling; server-side fallback. (C)
 - [ ] 6.4 Fake Claude server for tests (recorded responses), wired by base URL. (C)

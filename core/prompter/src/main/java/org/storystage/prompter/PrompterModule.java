@@ -11,7 +11,11 @@ import org.storystage.prompter.settings.PrompterPolicy;
 import org.storystage.prompter.settings.SpokenStepsState;
 import org.storystage.prompter.settings.VoiceInputState;
 import org.storystage.prompter.spi.PrompterProvider;
+import org.storystage.prompter.key.KeyStores;
 import org.storystage.prompter.ui.PrompterPanelComposite;
+import org.storystage.prompter.ui.SetupWizard;
+
+import javax.swing.SwingUtilities;
 
 import java.util.Arrays;
 import java.util.List;
@@ -25,7 +29,13 @@ public final class PrompterModule implements PrompterProvider {
   public PrompterModule() {
     this.policy = PrompterPolicy.load();
     Logger.outln("StoryStage Prompter:", this.policy);
-    PrompterEnabledState.getInstance().addNewSchoolValueListener(e -> this.firePanelShowingChanged());
+    PrompterEnabledState.getInstance().addNewSchoolValueListener(e -> {
+      if (Boolean.TRUE.equals(e.getNextValue()) && KeyStores.get().read().isEmpty()) {
+        // Completing set-up is the only way to switch the Prompter on (spec 02 §1).
+        SwingUtilities.invokeLater(this::runSetUpOrSwitchOff);
+      }
+      this.firePanelShowingChanged();
+    });
     if (this.policy.isLockedOff()) {
       PrompterEnabledState.getInstance().setEnabled(false);
       VoiceInputState.getInstance().setEnabled(false);
@@ -60,6 +70,13 @@ public final class PrompterModule implements PrompterProvider {
         PrompterEnabledState.getInstance().getMenuItemPrepModel(),
         VoiceInputState.getInstance().getMenuItemPrepModel(),
         SpokenStepsState.getInstance().getMenuItemPrepModel());
+  }
+
+  private void runSetUpOrSwitchOff() {
+    if (KeyStores.get().read().isEmpty() && !SetupWizard.showWizard(null)) {
+      PrompterEnabledState.getInstance().setValueTransactionlessly(false);
+    }
+    this.firePanelShowingChanged();
   }
 
   private void firePanelShowingChanged() {

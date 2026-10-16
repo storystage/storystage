@@ -22,6 +22,18 @@
       <groupId>org.alice</groupId>
       <artifactId>ide</artifactId>
     </dependency>
+    <!-- Claude API: official Java SDK (MIT licence) -->
+    <dependency>
+      <groupId>com.anthropic</groupId>
+      <artifactId>anthropic-java</artifactId>
+      <version>2.34.0</version>
+    </dependency>
+    <!-- OS credential stores for the API key (BSD-3-Clause; uses JNA) -->
+    <dependency>
+      <groupId>com.github.javakeyring</groupId>
+      <artifactId>java-keyring</artifactId>
+      <version>1.0.4</version>
+    </dependency>
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
