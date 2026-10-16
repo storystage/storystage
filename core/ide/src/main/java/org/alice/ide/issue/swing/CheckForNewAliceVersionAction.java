@@ -52,7 +52,7 @@ import java.awt.event.ActionEvent;
  * @author Dennis Cosgrove
  */
 public class CheckForNewAliceVersionAction extends AbstractAction {
-  private static final String SPEC = "http://www.alice.org/get-alice/alice-3";
+  private static final String SPEC = org.storystage.StoryStage.WEBSITE; // StoryStage
 
   public CheckForNewAliceVersionAction() {
     this.putValue(Action.NAME, SPEC);

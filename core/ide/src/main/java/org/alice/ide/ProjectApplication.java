@@ -72,11 +72,11 @@ import org.lgna.croquet.undo.event.HistoryListener;
 import org.lgna.croquet.undo.event.HistoryPushEvent;
 import org.lgna.project.ProgramTypeUtilities;
 import org.lgna.project.Project;
-import org.lgna.project.ProjectVersion;
 import org.lgna.project.VersionNotSupportedException;
 import org.lgna.project.ast.NamedUserType;
 import org.lgna.project.ast.UserField;
 import org.lgna.project.ast.UserMethod;
+import org.storystage.StoryStage;
 
 import javax.swing.RootPaneContainer;
 import java.awt.image.BufferedImage;
@@ -172,11 +172,13 @@ public abstract class ProjectApplication extends PerspectiveApplication<ProjectD
   }
 
   public static String getApplicationName() {
-    return "Alice";
+    // StoryStage: product name; also gives StoryStage its own user folder (see getApplicationSubPath)
+    return StoryStage.NAME;
   }
 
   public static String getVersionAdornment() {
-    return String.valueOf(ProjectVersion.getCurrentVersion().getAliceIdentifier());
+    // StoryStage: show the StoryStage version, not Alice's project format identifier
+    return StoryStage.VERSION;
   }
 
   @Override

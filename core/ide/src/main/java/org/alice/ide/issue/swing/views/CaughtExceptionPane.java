@@ -65,7 +65,7 @@ import java.awt.Color;
  * @author Dennis Cosgrove
  */
 public class CaughtExceptionPane extends AbstractCaughtExceptionPane {
-  private static final String APPLICATION_NAME = "Alice";
+  private static final String APPLICATION_NAME = org.storystage.StoryStage.NAME; // StoryStage
   private static final float FONT_SCALE = 1.15f;
   private static final Icon MEAN_QUEEN_ICON;
 

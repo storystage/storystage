@@ -52,7 +52,7 @@ import java.io.File;
  */
 public class ApplicationRoot {
   private static final String DEFAULT_APPLICATION_ROOT_SYSTEM_PROPERTY = "org.alice.ide.rootDirectory";
-  private static final String DEFAULT_APPLICATION_NAME = "Alice";
+  private static final String DEFAULT_APPLICATION_NAME = "StoryStage"; // StoryStage
 
   private static File rootDirectory;
 

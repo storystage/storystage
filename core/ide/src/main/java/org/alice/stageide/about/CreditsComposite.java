@@ -62,6 +62,10 @@ public class CreditsComposite extends LazyOperationUnadornedDialogCoreComposite<
   @Override
   protected Panel createView() {
     StringBuilder sb = new StringBuilder();
+    // StoryStage: credit the fork first, then keep Alice's own credits unchanged
+    sb.append("<strong>StoryStage</strong> " + org.storystage.StoryStage.VERSION + " is a free, non-commercial fork of Alice "
+        + org.storystage.StoryStage.getAliceBaseVersion() + ". This product includes software developed by Carnegie Mellon University"
+        + " and by Washington University in St. Louis, and art and animations developed by Electronic Arts Inc.<p>");
     sb.append("Alice 3 is designed and implemented by <strong>Dennis Cosgrove</strong>, <strong>David Culyba</strong>, and <strong>Matt May</strong>.<p>");
     sb.append("It is inspired by many systems that have preceded it, most notably <strong>Caitlin Kelleher</strong>'s dissertation: Storytelling Alice.<p>");
     sb.append("Great thanks are owed to the members of Caitlin Kelleher's Looking Glass Research Group, specifically:<br><strong>Kyle Harms</strong> for his work on the Croquet toolkit and <br><strong>Gazihan Alankus</strong> for his work on inverse kinematics.<p>");
