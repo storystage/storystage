@@ -256,13 +256,29 @@ public final class SelfTest {
   private static <T> T onEdt(java.util.concurrent.Callable<T> work) throws Exception {
     AtomicReference<T> value = new AtomicReference<>();
     AtomicReference<Exception> error = new AtomicReference<>();
-    SwingUtilities.invokeAndWait(() -> {
+    java.util.concurrent.CountDownLatch done = new java.util.concurrent.CountDownLatch(1);
+    SwingUtilities.invokeLater(() -> {
       try {
         value.set(work.call());
       } catch (Exception e) {
         error.set(e);
+      } finally {
+        done.countDown();
       }
     });
+    if (!done.await(90, java.util.concurrent.TimeUnit.SECONDS)) {
+      // Show where the Swing thread is stuck, then give up.
+      for (Map.Entry<Thread, StackTraceElement[]> e : Thread.getAllStackTraces().entrySet()) {
+        String name = e.getKey().getName();
+        if (name.startsWith("AWT-EventQueue") || name.contains("GL") || name.contains("Animator")) {
+          log("thread " + name + " (" + e.getKey().getState() + ")");
+          for (StackTraceElement frame : e.getValue()) {
+            log("    at " + frame);
+          }
+        }
+      }
+      throw new IllegalStateException("A step on the Swing thread didn't finish within 90 seconds.");
+    }
     if (error.get() != null) {
       throw error.get();
     }
