@@ -10,7 +10,7 @@ Never paste the key anywhere except the StoryStage set-up wizard.
 
 | # | Do | Expect | ✓ |
 |---|---|---|---|
-| A1 | Unzip to a short path, for example `C:\StoryStage`. | The folder holds `StoryStage.exe`, `StoryStage-console.exe`, `License.txt`, `NOTICE`. | |
+| A1 | Unzip to a short path, for example `C:\StoryStage`. | The folder holds `StoryStage.exe`, `StoryStage-console.exe`, `StoryStage-selftest.exe`, `License.txt`, `NOTICE`. | |
 | A2 | Start `StoryStage.exe`. Time it until the start-up dialog appears. | It opens, with StoryStage in the title. Note the time: ______ s. | |
 | A3 | Pick the **Grass** backdrop and open it. | The scene and code editor appear. No Prompter panel. | |
 | A4 | Help → About. | StoryStage 0.1.0, based on Alice 3.9.1.0, with the Alice credits. | |
@@ -18,6 +18,7 @@ Never paste the key anywhere except the StoryStage set-up wizard.
 | A6 | Add two objects from the gallery and press **Rehearse**. | Behaves like Alice 3. | |
 | N1 | With StoryStage open and the Prompter off, run in PowerShell: `Get-NetTCPConnection -OwningProcess (Get-Process StoryStage).Id -ErrorAction SilentlyContinue` | No connections (or only to 127.0.0.1). Needed before the privacy notice is published. | |
 | A7 | Task Manager → Details → StoryStage.exe, memory column. | Note: ______ MB. | |
+| A8 | Close StoryStage. Run `StoryStage-selftest.exe`. It opens a world, makes and undoes about 20 Prompter steps by itself (no Claude, no cost), then closes. | The console window ends with `SELFTEST PASS`. | |
 
 ## B. Switches and school policy
 
