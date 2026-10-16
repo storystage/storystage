@@ -6,6 +6,7 @@
 #
 # Layout of the result (<output-dir>/StoryStage):
 #   StoryStage.exe, StoryStage-console.exe   launchers
+#   StoryStage-selftest.exe                  checks the Prompter's tools in a live world
 #   runtime/                                 Java 21 runtime made by jpackage
 #   app/*.jar                                IDE jars (classpath)
 #   app/javafx/*.jar                         JavaFX (module path; required because
@@ -59,6 +60,16 @@ cat > "$STAGE/console.properties" <<EOF
 win-console=true
 EOF
 
+# Third launcher, when the Prompter is built: runs its tools against a new world and exits.
+SELFTEST_ARGS=()
+if ls "$STAGE"/input/prompter-*.jar >/dev/null 2>&1; then
+  cat > "$STAGE/selftest.properties" <<EOF
+win-console=true
+main-class=org.storystage.prompter.selftest.SelfTest
+EOF
+  SELFTEST_ARGS=(--add-launcher "$NAME-selftest=$STAGE/selftest.properties")
+fi
+
 jpackage \
   --type app-image \
   --name "$NAME" \
@@ -69,6 +80,7 @@ jpackage \
   --main-jar "$(basename "$MAIN_JAR")" \
   --main-class org.alice.stageide.EntryPoint \
   --add-launcher "$NAME-console=$STAGE/console.properties" \
+  "${SELFTEST_ARGS[@]}" \
   "${JAVA_OPT_ARGS[@]}" \
   --dest "$OUT"
 

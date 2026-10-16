@@ -3,8 +3,11 @@
  */
 package org.storystage.prompter.tools;
 
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
+import org.alice.stageide.modelresource.ClassResourceKey;
 import org.alice.stageide.modelresource.EnumConstantResourceKey;
 import org.alice.stageide.modelresource.ResourceKey;
+import org.lgna.story.resources.ModelResource;
 import org.lgna.story.resourceutilities.GalleryResourceTreeNode;
 import org.lgna.story.resourceutilities.StorytellingResourcesTreeUtils;
 
@@ -29,10 +32,19 @@ public final class GalleryCatalog {
   /** The gallery as installed with this copy of StoryStage. Call on the Swing thread. */
   public static GalleryCatalog load() {
     Map<String, EnumConstantResourceKey> map = new LinkedHashMap<>();
+    GalleryResourceTreeNode root;
     try {
-      collect(StorytellingResourcesTreeUtils.INSTANCE.getGalleryTree(), new ArrayList<>(), map);
+      root = StorytellingResourcesTreeUtils.INSTANCE.getGalleryTree();
     } catch (RuntimeException e) {
-      // No gallery (for example in a test run): the catalog is simply empty.
+      // No gallery (for example in a unit test run): the catalog is simply empty.
+      Logger.throwable(e, "StoryStage Prompter: no gallery");
+      return new GalleryCatalog(map);
+    }
+    if (root != null) {
+      // The root has no resource of its own (asking for its key fails), as in TreeUtilities.
+      for (GalleryResourceTreeNode child : root.childrenList()) {
+        collect(child, new ArrayList<>(), map);
+      }
     }
     return new GalleryCatalog(map);
   }
@@ -46,10 +58,17 @@ public final class GalleryCatalog {
     if (node == null) {
       return;
     }
-    ResourceKey key = node.getResourceKey();
+    ResourceKey key;
+    try {
+      key = node.getResourceKey();
+    } catch (RuntimeException e) {
+      // One unusual node must not hide the rest of the gallery.
+      Logger.throwable(e, "StoryStage Prompter: skipped gallery node", node.getName());
+      key = null;
+    }
     List<String> here = path;
     String name = node.getName();
-    if (name != null && !name.isEmpty() && node.getParent() != null) {
+    if (name != null && !name.isEmpty()) {
       here = new ArrayList<>(path);
       here.add(name.replace('/', '-'));
     }
@@ -59,9 +78,23 @@ public final class GalleryCatalog {
         id = enumKey.getInternalName();
       }
       out.putIfAbsent(id, enumKey);
+    } else if (key instanceof ClassResourceKey classKey && classKey.getModelResourceCls().isEnum()) {
+      // Most gallery leaves are resource classes; each enum constant is one model (spec 01 §2.2).
+      addConstants(classKey.getModelResourceCls(), String.join("/", here), out);
     }
     for (GalleryResourceTreeNode child : node.childrenList()) {
       collect(child, here, out);
+    }
+  }
+
+  @SuppressWarnings("unchecked")
+  static void addConstants(Class<? extends ModelResource> cls, String path, Map<String, EnumConstantResourceKey> out) {
+    ModelResource[] constants = cls.getEnumConstants();
+    String base = path.isEmpty() ? cls.getSimpleName().replace("Resource", "") : path;
+    for (ModelResource constant : constants) {
+      Enum<? extends ModelResource> e = (Enum<? extends ModelResource>) constant;
+      String id = constants.length == 1 ? base : base + "/" + e.name();
+      out.putIfAbsent(id, new EnumConstantResourceKey(e));
     }
   }
 

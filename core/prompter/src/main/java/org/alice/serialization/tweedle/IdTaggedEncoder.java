@@ -3,6 +3,7 @@
  */
 package org.alice.serialization.tweedle;
 
+import edu.cmu.cs.dennisc.java.util.logging.Logger;
 import org.lgna.project.ast.Statement;
 import org.storystage.prompter.context.NodeIds;
 
@@ -33,6 +34,12 @@ public final class IdTaggedEncoder extends Encoder {
       this.tag(stmt);
       appender.run();
     });
+  }
+
+  /** Never a dialog: this encoder runs behind every Prompter request. The type is used as the label. */
+  @Override
+  protected void reportUnlabeledParameter(String message) {
+    Logger.warning(message.replace('\n', ' '));
   }
 
   private void tag(Statement stmt) {

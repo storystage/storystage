@@ -56,11 +56,24 @@ import java.awt.image.BufferedImage;
 public final class ThumbnailGenerator {
   private final OffscreenRenderTarget offscreenRenderTarget;
 
+  /**
+   * StoryStage: -Dstorystage.offscreenRendering=false turns thumbnails off, for machines where
+   * off-screen OpenGL capture hangs (for example CI runners without a GPU).
+   */
+  public static boolean isOffscreenRenderingAllowed() {
+    return !"false".equalsIgnoreCase(System.getProperty("storystage.offscreenRendering"));
+  }
+
   public ThumbnailGenerator(int width, int height) {
-    this.offscreenRenderTarget = GlrRenderFactory.getInstance().createOffscreenRenderTarget(width, height, new RenderCapabilities.Builder().build());
+    this.offscreenRenderTarget = isOffscreenRenderingAllowed()
+        ? GlrRenderFactory.getInstance().createOffscreenRenderTarget(width, height, new RenderCapabilities.Builder().build())
+        : null;
   }
 
   public BufferedImage createThumbnail() {
+    if (this.offscreenRenderTarget == null) {
+      return null;
+    }
     synchronized (this.offscreenRenderTarget) {
       StorytellingSceneEditor sceneEditor = StorytellingSceneEditor.getInstance();
       AbstractCamera sgCamera = sceneEditor.getSgCameraForCreatingThumbnails();

@@ -59,6 +59,10 @@ jobs:
         shell: pwsh
         run: storystage/build/smoke-test-windows.ps1 -AppDir target/dist/StoryStage
 
+      - name: Prompter self-test in a live world
+        shell: pwsh
+        run: storystage/build/selftest-windows.ps1 -AppDir target/dist/StoryStage
+
       - name: Zip
         shell: pwsh
         run: Compress-Archive -Path target/dist/StoryStage -DestinationPath "target/dist/StoryStage-${{ env.STORYSTAGE_VERSION }}-windows-x64.zip"
@@ -73,7 +77,9 @@ jobs:
         if: always()
         with:
           name: smoke-test-log
-          path: target/smoke-test.log
+          path: |
+            target/smoke-test.log
+            target/selftest.log
           if-no-files-found: ignore
 
   no-sims:
