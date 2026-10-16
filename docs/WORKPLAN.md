@@ -130,14 +130,14 @@ Each package lists its objective, tasks, deliverables and the check that closes 
 - [x] 8.2 `add_model` and `set_property` (scene setup via `DeclareGalleryFieldEdit` and setup statements). (C)
 - [x] 8.3 `insert_statement` (procedures with keyed details such as duration). (C)
 - [ ] 8.4 `declare_procedure` and `add_event_listener`. (C; TR1 covers simple cases)
-- [ ] 8.5 `explain` and block highlighting. (C)
-- [ ] 8.6 Multi-step request handling: one Project History group per request, so a whole request can be undone. (C)
+- [x] 8.5 `explain` and block highlighting. (C)
+- [x] 8.6 Multi-step request handling: one Project History group per request, so a whole request can be undone. (C)
 
 **Done when:** every tool has unit tests, and the evaluation set's scene requests build valid worlds against recorded responses.
 
 ### WP9: Prompter panel UI
-- [ ] 9.1 Docked panel in code and scene editors: transcript, input box, push-to-talk button, stop button, mode switch ("Show me how" / "Build it"). (C)
-- [ ] 9.2 Progress, captions, error states; keyboard access. (C)
+- [x] 9.1 Docked panel in code and scene editors: transcript, input box, push-to-talk button, stop button, mode switch ("Show me how" / "Build it"). (C)
+- [x] 9.2 Progress, captions, error states; keyboard access. (C)
 - [ ] 9.3 Links from Prompter messages to the blocks or objects they mention. (C)
 
 **Done when:** the UX spec's states are all reachable, and the manual test script passes.
@@ -150,10 +150,10 @@ Each package lists its objective, tasks, deliverables and the check that closes 
 **Done when:** a spoken request on the owner's PC is transcribed with no network use apart from the one-off model download. (U test)
 
 ### WP11: Speech output
-- [ ] 11.1 TTS interface; Windows voice provider (System.Speech/SAPI, UK English voice preferred). (C)
-- [ ] 11.2 macOS `say` and Linux speech-dispatcher providers (compile-tested; full test later). (C)
-- [ ] 11.3 Flite fallback provider. (C)
-- [ ] 11.4 Narration queue tied to tool execution; stop; captions. (C)
+- [x] 11.1 TTS interface; Windows voice provider (System.Speech/SAPI, UK English voice preferred). (C)
+- [x] 11.2 macOS `say` and Linux speech-dispatcher providers (compile-tested; full test later). (C)
+- [x] 11.3 Flite fallback provider. (C)
+- [x] 11.4 Narration queue tied to tool execution; stop; captions. (C)
 
 **Done when:** each step of a multi-step request is spoken as it is applied, and can be stopped.
 

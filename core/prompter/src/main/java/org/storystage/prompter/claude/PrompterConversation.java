@@ -63,6 +63,10 @@ public final class PrompterConversation {
     void toolFinished(String toolName, ToolExecutor.Result result);
 
     void finished(Outcome outcome, String message);
+
+    /** Token counts for one reply, for the usage meter. */
+    default void usage(long inputTokens, long outputTokens, long cacheReadTokens, long cacheWriteTokens) {
+    }
   }
 
   /** How a request ended; the message for each comes from spec 01 §5. */
@@ -231,7 +235,10 @@ public final class PrompterConversation {
     } catch (StopException e) {
       throw new AnthropicIoException("stopped", null);
     }
-    return accumulator.message();
+    Message message = accumulator.message();
+    com.anthropic.models.messages.Usage usage = message.usage();
+    listener.usage(usage.inputTokens(), usage.outputTokens(), usage.cacheReadInputTokens().orElse(0L), usage.cacheCreationInputTokens().orElse(0L));
+    return message;
   }
 
   private Outcome finish(Listener listener, Outcome outcome, String message) {
