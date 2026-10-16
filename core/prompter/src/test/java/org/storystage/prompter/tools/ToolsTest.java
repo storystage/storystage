@@ -115,4 +115,15 @@ public class ToolsTest {
     // A resource with one model gets the path itself as its id.
     assertEquals(List.of("Prop/Tree"), List.copyOf(out.keySet()));
   }
+
+  @Test
+  public void insertionIndexIsAlwaysARealPosition() {
+    BlockStatement block = new BlockStatement();
+    assertEquals(0, WorldTools.insertionIndex(block, -1));
+    block.statements.add(new ExpressionStatement(new ThisExpression()));
+    block.statements.add(new ExpressionStatement(new ThisExpression()));
+    assertEquals(2, WorldTools.insertionIndex(block, -1));
+    assertEquals(2, WorldTools.insertionIndex(block, 99));
+    assertEquals(1, WorldTools.insertionIndex(block, 1));
+  }
 }

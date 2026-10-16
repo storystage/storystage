@@ -336,7 +336,7 @@ public final class WorldTools implements ToolExecutor {
       invocation.keyedArguments.add(new JavaKeyedArgument(invocation.method.getValue().getKeyedParameter(), JavaMethod.getInstance(factory), values.convert(d.getValue(), detailType)));
     }
     ExpressionStatement statement = new ExpressionStatement(invocation);
-    int at = index < 0 ? InsertStatementEdit.AT_END : index;
+    int at = insertionIndex(block, index);
     this.commit(activity -> new InsertStatementEdit<>(activity, new BlockStatementIndexPair(block, at), statement));
     return Result.ok(ok(Map.of("ids", Map.of("block", this.ids.idOf(statement)))), text(in, "narration"));
   }
@@ -413,7 +413,7 @@ public final class WorldTools implements ToolExecutor {
     default:
       throw new ToolError("not_allowed_here", "In this version the Prompter can add do_in_order, do_together and count blocks.");
     }
-    int at = index < 0 ? InsertStatementEdit.AT_END : index;
+    int at = insertionIndex(block, index);
     Statement toInsert = statement;
     this.commit(activity -> new InsertStatementEdit<>(activity, new BlockStatementIndexPair(block, at), toInsert));
     return Result.ok(ok(Map.of("ids", Map.of("block", this.ids.idOf(statement)))), text(in, "narration"));
@@ -473,7 +473,7 @@ public final class WorldTools implements ToolExecutor {
     }
     ExpressionStatement statement = new ExpressionStatement(invocation);
     BlockStatement body = listeners.body.getValue();
-    this.commit(activity -> new InsertStatementEdit<>(activity, new BlockStatementIndexPair(body, InsertStatementEdit.AT_END), statement));
+    this.commit(activity -> new InsertStatementEdit<>(activity, new BlockStatementIndexPair(body, body.statements.size()), statement));
     return Result.ok(ok(Map.of("ids", Map.of("block", this.ids.idOf(statement)))), text(in, "narration"));
   }
 
@@ -546,6 +546,15 @@ public final class WorldTools implements ToolExecutor {
       }
     }
     throw new ToolError("unknown_method", "There's no method " + methodName + ". Use Scene.myFirstMethod or another method in the project.");
+  }
+
+  /**
+   * A real position in the block. InsertStatementEdit.AT_END can't be undone (its undo looks one
+   * past the last statement), so the Prompter never uses it; Alice's own UI never does either.
+   */
+  static int insertionIndex(BlockStatement block, int requested) {
+    int size = block.statements.size();
+    return requested < 0 || requested > size ? size : requested;
   }
 
   /** The body of an event listener statement such as this.addMouseClickOnObjectListener(...), or null. */
