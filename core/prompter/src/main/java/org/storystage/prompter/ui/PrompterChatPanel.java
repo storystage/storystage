@@ -8,6 +8,7 @@ import org.storystage.prompter.claude.Json;
 import org.storystage.prompter.claude.PrompterConversation;
 import org.storystage.prompter.claude.ToolExecutor;
 import org.storystage.prompter.settings.PrompterPolicy;
+import org.storystage.prompter.settings.VoiceInputState;
 
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
@@ -19,6 +20,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.KeyStroke;
+import javax.swing.SwingUtilities;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
@@ -46,6 +48,7 @@ final class PrompterChatPanel extends JPanel implements PrompterSession.View {
   private final JButton newConversation = new JButton("New conversation");
   private final JLabel status = new JLabel(" ");
   private final JLabel usage = new JLabel(" ");
+  private final HoldToTalk holdToTalk;
   private Consumer<String> narrationListener = text -> { };
   private boolean busy;
   private boolean prompterSpeaking;
@@ -82,7 +85,17 @@ final class PrompterChatPanel extends JPanel implements PrompterSession.View {
       }
     });
 
+    this.holdToTalk = new HoldToTalk(this.input, this.status::setText);
+    // Voice input shows only when the learner has switched it on and the school allows it (spec 02 §4).
+    boolean voiceAllowed = policy.isVoiceInputAllowed() && !policy.isLockedOff();
+    this.holdToTalk.getButton().setVisible(voiceAllowed && VoiceInputState.getInstance().getValue());
+    VoiceInputState.getInstance().addNewSchoolValueListener(e -> SwingUtilities.invokeLater(() -> {
+      this.holdToTalk.getButton().setVisible(voiceAllowed && Boolean.TRUE.equals(e.getNextValue()));
+      this.revalidate();
+    }));
+
     JPanel buttons = new JPanel(new FlowLayout(FlowLayout.LEFT, 4, 0));
+    buttons.add(this.holdToTalk.getButton());
     buttons.add(this.send);
     buttons.add(this.stop);
     buttons.add(this.undo);
@@ -147,6 +160,7 @@ final class PrompterChatPanel extends JPanel implements PrompterSession.View {
     this.stop.setEnabled(this.busy);
     this.undo.setEnabled(!this.busy && this.session.canUndoLastRequest());
     this.newConversation.setEnabled(!this.busy);
+    this.holdToTalk.setBusy(this.busy);
   }
 
   @Override

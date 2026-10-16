@@ -70,7 +70,10 @@ src/license/licenses.xml.
 The StoryStage Prompter module (core/prompter) adds: the Anthropic Java SDK
 (com.anthropic:anthropic-java, MIT licence) with OkHttp and Kotlin standard
 library (Apache 2.0); java-keyring (BSD 3-Clause) with JNA (Apache 2.0 or
-LGPL 2.1), secret-service and jkeychain for the OS credential stores.
+LGPL 2.1), secret-service and jkeychain for the OS credential stores; and
+whisper-jni (io.github.givimad:whisper-jni, Apache 2.0), which bundles
+whisper.cpp (MIT licence) for speech input. The whisper.cpp speech models
+(MIT licence) are downloaded on first use, not shipped.
 
 
 TRADEMARKS
