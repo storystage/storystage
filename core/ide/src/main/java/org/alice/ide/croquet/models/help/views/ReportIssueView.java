@@ -42,13 +42,11 @@
  *******************************************************************************/
 package org.alice.ide.croquet.models.help.views;
 
-import edu.cmu.cs.dennisc.javax.swing.IconUtilities;
 import org.alice.ide.croquet.models.help.ReportIssueComposite;
 import org.alice.ide.issue.SubmitReportUtilities;
 import org.lgna.croquet.views.*;
 
 import javax.swing.BorderFactory;
-import javax.swing.Icon;
 import java.awt.Color;
 import java.awt.Component;
 import java.util.List;
@@ -57,8 +55,6 @@ import java.util.List;
  * @author Matt May
  */
 public class ReportIssueView extends AbstractIssueView {
-  private static final Icon headerIcon = IconUtilities.createImageIcon(ReportIssueView.class.getResource("/org/alice/ide/issue/swing/views/images/logo.png"));
-
   public ReportIssueView(final ReportIssueComposite composite) {
     super(composite);
     final TextArea environmentTextArea = composite.getEnvironmentState().createTextArea();
@@ -82,8 +78,10 @@ public class ReportIssueView extends AbstractIssueView {
     };
 
     Color backgroundColor = Color.DARK_GRAY;
-    Label headerLabel = new Label();
-    headerLabel.setIcon(headerIcon);
+    // StoryStage: a plain heading instead of Alice's bug-tracker logo, which names Alice's tracker.
+    Label headerLabel = new Label(org.storystage.StoryStage.NAME + " problem report");
+    headerLabel.setForegroundColor(Color.WHITE);
+    headerLabel.scaleFont(1.6f);
     headerLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
     Hyperlink link = composite.getBrowserOperation().createHyperlink();
     link.setForegroundColor(Color.LIGHT_GRAY);

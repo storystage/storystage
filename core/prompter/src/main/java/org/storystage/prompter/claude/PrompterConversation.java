@@ -216,6 +216,9 @@ public final class PrompterConversation {
             .cacheControl(CacheControlEphemeral.builder().build())
             .build()))
         .messages(this.history)
+        // Automatic caching of the growing conversation, so each step of a request re-reads the
+        // earlier turns at the cache price instead of the full input price (TR1: costs ran high).
+        .cacheControl(CacheControlEphemeral.builder().build())
         .outputConfig(OutputConfig.builder().effort(mode.effort).build())
         // A request Claude declines is retried by the server on a suitable model (spec 01 §1).
         .putAdditionalHeader("anthropic-beta", FALLBACK_BETA)

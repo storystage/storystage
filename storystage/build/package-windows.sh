@@ -43,6 +43,8 @@ done
 # JVM options, matching the Alice installer (installer/aliceinstallerproject.install4j).
 JAVA_OPTS=(
   "-Xmx1024m"
+  # StoryStage keeps its own preferences, apart from an installed Alice 3 (TR1).
+  "-Djava.util.prefs.PreferencesFactory=org.storystage.prefs.FilePreferencesFactory"
   "-Dorg.alice.ide.rootDirectory=\$APPDIR/distribution"
   "-Dswing.aatext=true"
   "-Djogamp.gluegen.UseTempJarCache=false"

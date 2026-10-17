@@ -55,7 +55,7 @@ import org.lgna.croquet.views.HtmlMultiLineLabel;
 import org.lgna.croquet.views.Label;
 import org.lgna.croquet.views.LabeledFormRow;
 import org.lgna.croquet.views.PageAxisPanel;
-import org.lgna.project.ProjectVersion;
+import org.storystage.StoryStage;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -121,10 +121,14 @@ public class AboutView extends BorderPanel {
     otherPanel.addComponent(formPanel);
     otherPanel.addComponent(BoxUtilities.createVerticalSliver(16));
 
+    // StoryStage: say what this is first, then keep the link to Alice's site as credit.
+    otherPanel.addComponent(new HtmlMultiLineLabel("<strong>" + StoryStage.describe() + "</strong>"));
+    final Operation storyStageSiteOperation = new BrowserOperation(UUID.fromString("7d1f3e2a-9b4c-4e6d-8a5f-2c1b0e9d8f37"), StoryStage.WEBSITE);
+    otherPanel.addComponent(storyStageSiteOperation.createHyperlink());
     final Operation aliceSiteOperation = new BrowserOperation(UUID.fromString("c0e0d8bf-3c9d-4b47-aeb0-1623de06a8ea"), BrowserOperation.ALICE_HOME_URI);
     otherPanel.addComponent(aliceSiteOperation.createHyperlink());
     otherPanel.addComponent(composite.getCreditsDialogLaunchOperation().createHyperlink());
-    otherPanel.addComponent(new HtmlMultiLineLabel(getLocalizedStringByKey("aboutVersion").formatted(ProjectVersion.getCurrentVersionText())));
+    otherPanel.addComponent(new HtmlMultiLineLabel(getLocalizedStringByKey("aboutVersion").formatted(StoryStage.getAliceBaseVersion())));
     otherPanel.addComponent(BoxUtilities.createVerticalSliver(16));
     otherPanel.addComponent(new HtmlMultiLineLabel(getLocalizedStringByKey("aboutDedication")));
 

@@ -46,6 +46,7 @@ import java.util.prefs.Preferences;
  */
 public final class SelfTest {
   private static final long START_TIMEOUT_MS = 240_000;
+  private static final long STARTED_AT = System.nanoTime();
   private final List<String> failures = new ArrayList<>();
   private int checks;
 
@@ -83,11 +84,36 @@ public final class SelfTest {
         log("SELFTEST FAIL: " + t);
         code = 1;
       }
+      cleanUp(world);
       Runtime.getRuntime().halt(code);
     }, "StoryStage self-test");
     runner.setDaemon(true);
     runner.start();
     Class.forName("org.alice.stageide.EntryPoint").getMethod("main", String[].class).invoke(null, (Object) new String[] {world.getAbsolutePath()});
+  }
+
+  /**
+   * Leaves no trace for the next normal start (TR1): marks the session as closed cleanly, so no
+   * "did not close properly" message, and deletes the test world and its backups.
+   */
+  private static void cleanUp(File world) {
+    try {
+      Preferences crash = Preferences.userRoot().node("/org/alice/stageide");
+      crash.putBoolean("IS_SUCCESSFULLY_CLOSED", true);
+      crash.flush();
+    } catch (Exception e) {
+      log("couldn't mark a clean close: " + e);
+    }
+    String name = world.getName();
+    File backups = new File(world.getParentFile(), name.substring(0, name.length() - ".a3p".length()) + ".bak");
+    File[] files = backups.listFiles();
+    if (files != null) {
+      for (File f : files) {
+        f.delete();
+      }
+    }
+    backups.delete();
+    world.delete();
   }
 
   private static void log(String line) {
@@ -97,7 +123,8 @@ public final class SelfTest {
 
   private int run() throws Exception {
     waitForWorld();
-    log("world open");
+    // Start-up time for the performance table in the TR1 script (section G).
+    log(String.format("world open after %.1f s", (System.nanoTime() - STARTED_AT) / 1e9));
     NodeIds ids = new NodeIds();
     GalleryCatalog gallery = GalleryCatalog.load();
     this.check("gallery has models", gallery.ids().size() > 10, gallery.ids().size() + " models");

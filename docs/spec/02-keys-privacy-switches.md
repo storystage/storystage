@@ -8,7 +8,7 @@ A Croquet wizard (`WizardDialogCoreComposite` with `WizardPageComposite` pages),
 
 | Page | Content | Leaves when |
 |---|---|---|
-| 1 What the Prompter does | Plain-language summary; what is sent to Anthropic (the world's code, scene pictures when allowed, the typed or transcribed request); what is never sent (audio, files, the key to anyone but Anthropic); typical cost per request (about 7 cents on the default model); "The Claude account must belong to an adult (18 or over): a parent, teacher or school." | **Next** |
+| 1 What the Prompter does | Plain-language summary; what is sent to Anthropic (the world's code, scene pictures when allowed, the typed or transcribed request); what is never sent (audio, files, the key to anyone but Anthropic); typical cost per request (10 to 30 US cents on the default model, up to about 50 cents for the first request in a session, as measured in TR1); "The Claude account must belong to an adult (18 or over): a parent, teacher or school." | **Next** |
 | 2 Create your Claude account | Steps with the Console address shown as copyable text: sign up; add credit or billing; create a workspace called "StoryStage" and set a monthly spend limit; create an API key in that workspace (choosing **Continue with an API key** when the Console offers identity federation, which is for cloud workloads); copy it at once, as it is shown only once | **Next** |
 | 3 Enter your key | Password-style field (masked, with a show toggle), paste allowed. **Check key** lists models with the key (no tokens used) | The check succeeds |
 | 4 Options | Mode default ("Show me how" or "Build it"); voice input on/off; spoken steps on/off; "let the Prompter see the scene" on/off | **Finish** |
@@ -53,6 +53,8 @@ Each response's `usage` (input, cache read, cache write, output tokens) is added
 | Build | No `core/prompter` on the classpath (`-DincludePrompter=false`) | No provider found; no Prompter menus or panel |
 
 The policy file is plain text so a school can deploy it with its usual tools. Unknown keys are ignored, and a malformed file means "Prompter off".
+
+**Create it as an administrator** (an elevated PowerShell, Group Policy or the school's deployment tool). With the default permissions on `C:\ProgramData`, a standard user can create files there but cannot change or delete a file an administrator created, so learners cannot undo the policy. A file a learner creates only restricts that learner. TR1 found that the file can be written without admin rights when it does not exist yet.
 
 ## 5. Privacy notice (website and wizard page 1)
 

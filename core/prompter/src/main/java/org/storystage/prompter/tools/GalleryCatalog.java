@@ -110,11 +110,32 @@ public final class GalleryCatalog {
     return this.byId.isEmpty();
   }
 
-  /** The catalog as system-prompt text: one gallery id per line. */
+  /**
+   * The catalog as system-prompt text. Variants of one model share a line, as in
+   * {@code Flyer/Penguin/{ADULT|BABY}}, which keeps the prompt (and every request's cost) small.
+   */
   public String render() {
-    StringBuilder sb = new StringBuilder("## Gallery models (use these ids with add_model)\n");
+    Map<String, List<String>> byParent = new LinkedHashMap<>();
     for (String id : this.byId.keySet()) {
-      sb.append(id).append('\n');
+      int slash = id.lastIndexOf('/');
+      String parent = slash > 0 ? id.substring(0, slash) : "";
+      byParent.computeIfAbsent(parent, k -> new ArrayList<>()).add(id);
+    }
+    StringBuilder sb = new StringBuilder("## Gallery models (ids for add_model)\n");
+    sb.append("A line like Flyer/Penguin/{ADULT|BABY} means the ids Flyer/Penguin/ADULT and Flyer/Penguin/BABY.\n");
+    for (Map.Entry<String, List<String>> e : byParent.entrySet()) {
+      List<String> ids = e.getValue();
+      if (ids.size() == 1 || e.getKey().isEmpty()) {
+        for (String id : ids) {
+          sb.append(id).append('\n');
+        }
+      } else {
+        StringBuilder names = new StringBuilder();
+        for (String id : ids) {
+          names.append(names.length() == 0 ? "" : "|").append(id.substring(e.getKey().length() + 1));
+        }
+        sb.append(e.getKey()).append("/{").append(names).append("}\n");
+      }
     }
     return sb.toString();
   }

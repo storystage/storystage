@@ -47,6 +47,6 @@ A check passes or fails. Most can be judged by looking at the scene and the code
 - Score = checks passed / checks run, over all 47 requests.
 - TR1 targets (spec 05 §4): **75%** on a live run, and **no** failures in the `refusal` category.
 - Record each run as a CSV in `results/`, named `YYYY-MM-DD-<who>-<model>.csv`, with columns `id,check,pass,notes`. `results/template.csv` lists every check.
-- A live run costs roughly 47 × 7 US cents ≈ US$3.30.
+- A live run costs roughly 47 × 20 US cents ≈ US$10 (TR1 measured 10 to 50 cents a request).
 
 Automatic scoring against recorded responses (spec 05 §3) needs recordings made with a live key, so it follows the owner's first live run.

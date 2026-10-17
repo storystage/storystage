@@ -79,7 +79,8 @@ public class EntryPoint extends Application {
       String propertyName = "org.alice.stageide.isCrashDetectionDesired";
       String isCrashDetectionDesiredText = System.getProperty(propertyName, "true");
       if ("true".equals(isCrashDetectionDesiredText.toLowerCase(Locale.ENGLISH))) {
-        JOptionPane.showMessageDialog(null, "Alice did not successfully close last time.");
+        JOptionPane.showMessageDialog(null, "StoryStage did not close properly last time.\nIf you had unsaved work, StoryStage may offer you a backup of it next.",
+            "StoryStage", JOptionPane.INFORMATION_MESSAGE);
       }
     }
     crashDetector.open();

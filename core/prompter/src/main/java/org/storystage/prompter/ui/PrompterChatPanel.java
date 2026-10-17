@@ -49,6 +49,7 @@ final class PrompterChatPanel extends JPanel implements PrompterSession.View {
   private final JLabel status = new JLabel(" ");
   private final JLabel usage = new JLabel(" ");
   private final HoldToTalk holdToTalk;
+  private final PlainText plain = new PlainText();
   private Consumer<String> narrationListener = text -> { };
   private boolean busy;
   private boolean prompterSpeaking;
@@ -94,12 +95,17 @@ final class PrompterChatPanel extends JPanel implements PrompterSession.View {
       this.revalidate();
     }));
 
-    JPanel buttons = new JPanel(new FlowLayout(FlowLayout.LEFT, 4, 0));
-    buttons.add(this.holdToTalk.getButton());
-    buttons.add(this.send);
-    buttons.add(this.stop);
-    buttons.add(this.undo);
-    buttons.add(this.newConversation);
+    // Two rows, so every button fits in the panel's default width (TR1: Undo was cut off).
+    JPanel talkRow = new JPanel(new FlowLayout(FlowLayout.LEFT, 4, 0));
+    talkRow.add(this.holdToTalk.getButton());
+    talkRow.add(this.send);
+    talkRow.add(this.stop);
+    JPanel historyRow = new JPanel(new FlowLayout(FlowLayout.LEFT, 4, 0));
+    historyRow.add(this.undo);
+    historyRow.add(this.newConversation);
+    JPanel buttons = new JPanel(new BorderLayout(0, 4));
+    buttons.add(talkRow, BorderLayout.PAGE_START);
+    buttons.add(historyRow, BorderLayout.PAGE_END);
     JPanel south = new JPanel(new BorderLayout(0, 4));
     south.add(new JScrollPane(this.input), BorderLayout.PAGE_START);
     south.add(buttons, BorderLayout.CENTER);
@@ -169,17 +175,21 @@ final class PrompterChatPanel extends JPanel implements PrompterSession.View {
       this.append("Prompter: ");
       this.prompterSpeaking = true;
     }
-    this.append(delta);
+    this.append(this.plain.feed(delta));
+  }
+
+  private void endPrompterLine() {
+    if (this.prompterSpeaking) {
+      this.append(this.plain.flush() + "\n");
+      this.prompterSpeaking = false;
+    }
   }
 
   @Override
   public void stepFinished(String toolName, ToolExecutor.Result result) {
-    if (this.prompterSpeaking) {
-      this.append("\n");
-      this.prompterSpeaking = false;
-    }
+    this.endPrompterLine();
     if (result.isOk()) {
-      String narration = result.getNarration();
+      String narration = PlainText.of(result.getNarration());
       if (narration != null && !narration.isEmpty()) {
         this.append((toolName.equals("explain") ? "Prompter: " : "  - ") + narration + "\n");
         this.narrationListener.accept(narration);
@@ -200,12 +210,9 @@ final class PrompterChatPanel extends JPanel implements PrompterSession.View {
 
   @Override
   public void requestFinished(PrompterConversation.Outcome outcome, String message) {
-    if (this.prompterSpeaking) {
-      this.append("\n");
-      this.prompterSpeaking = false;
-    }
+    this.endPrompterLine();
     if (message != null) {
-      this.append("Prompter: " + message + "\n");
+      this.append("Prompter: " + PlainText.of(message) + "\n");
     }
     this.busy = false;
     this.status.setText(outcome == PrompterConversation.Outcome.DONE ? "Done. Press Rehearse to see it." : " ");

@@ -158,6 +158,7 @@ public abstract class AbstractDialogComposite<V extends CompositeView<?, ?>> ext
           WindowUtilities.setLocationOnScreenToCenteredWithin(dialog.getAwtComponent(), owner.getAwtComponent());
         }
       }
+      keepOnScreen(dialog.getAwtComponent());
       dialog.setTitle(this.getDialogTitle());
       handlePreShowDialog(dialog);
       //application.pushWindow( dialog );

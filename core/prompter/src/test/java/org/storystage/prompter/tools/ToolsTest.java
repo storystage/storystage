@@ -126,4 +126,19 @@ public class ToolsTest {
     assertEquals(2, WorldTools.insertionIndex(block, 99));
     assertEquals(1, WorldTools.insertionIndex(block, 1));
   }
+
+  @Test
+  public void galleryVariantsShareALine() {
+    Map<String, org.alice.stageide.modelresource.EnumConstantResourceKey> out = new java.util.LinkedHashMap<>();
+    GalleryCatalog.addConstants(org.lgna.story.resources.prop.AcaciaTreeResource.class, "Prop/AcaciaTree", out);
+    org.alice.stageide.modelresource.EnumConstantResourceKey key = out.values().iterator().next();
+    Map<String, org.alice.stageide.modelresource.EnumConstantResourceKey> entries = new java.util.LinkedHashMap<>();
+    entries.put("Flyer/Penguin/ADULT", key);
+    entries.put("Flyer/Penguin/BABY", key);
+    entries.put("Prop/AcaciaTree", key);
+    String text = GalleryCatalog.of(entries).render();
+    assertTrue(text, text.contains("Flyer/Penguin/{ADULT|BABY}\n"));
+    assertTrue(text, text.contains("Prop/AcaciaTree\n"));
+    assertNotNull(GalleryCatalog.of(entries).get("Flyer/Penguin/BABY"));
+  }
 }
