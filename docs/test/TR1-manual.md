@@ -11,21 +11,21 @@ Never paste the key anywhere except the StoryStage set-up wizard.
 | # | Do | Expect | ✓ |
 |---|---|---|---|
 | A1 | Unzip to a short path, for example `C:\StoryStage`. | The folder holds `StoryStage.exe`, `StoryStage-console.exe`, `StoryStage-selftest.exe`, `License.txt`, `NOTICE`. | |
-| A2 | Start `StoryStage.exe`. Time it until the start-up dialog appears. | It opens, with StoryStage in the title. Note the time: ______ s. | |
+| A2 | Start `StoryStage.exe`. Time it until the start-up dialog appears. | On the first start, two licence prompts (Alice 3, then The Sims 2 art): StoryStage keeps its own settings, apart from any Alice 3 on the PC. Then it opens, with StoryStage in the title. Note the time: ______ s. | |
 | A3 | Pick the **Grass** backdrop and open it. | The scene and code editor appear. No Prompter panel. | |
 | A4 | Help → About. | StoryStage 0.1.0, based on Alice 3.9.1.0, with the Alice credits. | |
 | A5 | Look at the tabs and menus. | **Backdrops** (not Templates); **Rehearse...** runs the world. | |
 | A6 | Add two objects from the gallery and press **Rehearse**. | Behaves like Alice 3. | |
 | N1 | With StoryStage open and the Prompter off, run in PowerShell: `Get-NetTCPConnection -OwningProcess (Get-Process StoryStage).Id -ErrorAction SilentlyContinue` | No connections (or only to 127.0.0.1). Needed before the privacy notice is published. | |
 | A7 | Task Manager → Details → StoryStage.exe, memory column. | Note: ______ MB. | |
-| A8 | Close StoryStage. Run `StoryStage-selftest.exe`. It opens a world, makes and undoes about 20 Prompter steps by itself (no Claude, no cost), then closes. | The console window ends with `SELFTEST PASS`. | |
+| A8 | Close StoryStage. Run `StoryStage-selftest.exe`. It opens a world, makes and undoes about 20 Prompter steps by itself (no Claude, no cost), then closes. | The console window ends with `SELFTEST PASS` and shows "world open after N s" (note it in section G). The next normal start shows no "did not close" message. | |
 
 ## B. Switches and school policy
 
 | # | Do | Expect | ✓ |
 |---|---|---|---|
 | B1 | Open the Preferences menu. | **Use the StoryStage Prompter**, **Talk to the Prompter (voice input)** and **Prompter reads its steps aloud**. The Prompter is unticked. | |
-| B2 | Close StoryStage. As administrator, create `C:\ProgramData\StoryStage\policy.properties` containing `prompter.enabled=false`. Start StoryStage. | The Prompter menu item is greyed out and can't be ticked. | |
+| B2 | Close StoryStage. As administrator, create `C:\ProgramData\StoryStage\policy.properties` containing `prompter.enabled=false`. Start StoryStage. | The Prompter menu item is greyed out and can't be ticked. As a standard (non-admin) user, try to edit or delete the file: Windows refuses. | |
 | B3 | Change the file to `prompter.explainOnly=true` (only that line). Restart. | Prompter can be switched on (after set-up, section C); the mode is fixed to **Explain only**. Come back to this step after C. | |
 | B4 | Change the file to `prompter.voiceInput=false`. Restart. | Voice input can't be ticked. | |
 | B5 | Delete the policy file. Restart. | Back to normal. | |
@@ -94,6 +94,7 @@ Start each step from a new Grass world unless it says otherwise. Note how long e
 | Measure | Value |
 |---|---|
 | Start-up to the start dialog (A2) | |
+| Self-test "world open after" (A8) | |
 | Memory with a Grass world, Prompter off (A7) | |
 | Memory after five Prompter requests | |
 | First request time (D1) | |

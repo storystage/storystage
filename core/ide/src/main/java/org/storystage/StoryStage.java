@@ -20,8 +20,15 @@ public final class StoryStage {
     throw new AssertionError();
   }
 
-  /** The Alice release StoryStage is based on, for example "3.9.1.0". */
+  /** The Alice release StoryStage is based on, for example "3.9.1.0" (without Alice's "+build..." suffix). */
   public static String getAliceBaseVersion() {
-    return ProjectVersion.getCurrentVersionText();
+    String text = ProjectVersion.getCurrentVersionText();
+    int plus = text.indexOf('+');
+    return plus > 0 ? text.substring(0, plus) : text;
+  }
+
+  /** For About boxes and reports: "StoryStage 0.1.0, based on Alice 3.9.1.0". */
+  public static String describe() {
+    return NAME + " " + VERSION + ", based on Alice " + getAliceBaseVersion();
   }
 }

@@ -54,6 +54,8 @@ Each response's `usage` (input, cache read, cache write, output tokens) is added
 
 The policy file is plain text so a school can deploy it with its usual tools. Unknown keys are ignored, and a malformed file means "Prompter off".
 
+**Create it as an administrator** (an elevated PowerShell, Group Policy or the school's deployment tool). With the default permissions on `C:\ProgramData`, a standard user can create files there but cannot change or delete a file an administrator created, so learners cannot undo the policy. A file a learner creates only restricts that learner. TR1 found that the file can be written without admin rights when it does not exist yet.
+
 ## 5. Privacy notice (website and wizard page 1)
 
 Draft points for WP12.4:

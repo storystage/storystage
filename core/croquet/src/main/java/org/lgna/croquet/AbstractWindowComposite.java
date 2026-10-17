@@ -48,7 +48,10 @@ import org.lgna.croquet.views.AbstractWindow;
 import org.lgna.croquet.views.CompositeView;
 
 import java.awt.Dimension;
+import java.awt.GraphicsEnvironment;
 import java.awt.Point;
+import java.awt.Rectangle;
+import java.awt.Window;
 import java.util.UUID;
 
 /**
@@ -132,8 +135,22 @@ public abstract class AbstractWindowComposite<V extends CompositeView<?, ?>> ext
   }
 
   public final void updateWindowSize(AbstractWindow<?> window) {
-    window.setSize(this.calculateWindowSize(window));
+    Dimension size = this.calculateWindowSize(window);
+    // StoryStage: never wider or taller than the screen (TR1: dialogs ran off a 1024 x 768 screen).
+    Rectangle screen = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds();
+    window.setSize(new Dimension(Math.min(size.width, screen.width), Math.min(size.height, screen.height)));
     window.getContentPane().revalidateAndRepaint();
+  }
+
+  /** StoryStage: moves a window back inside the usable screen area if it hangs off an edge. */
+  public static void keepOnScreen(Window window) {
+    Rectangle screen = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds();
+    Rectangle bounds = window.getBounds();
+    int x = Math.max(screen.x, Math.min(bounds.x, screen.x + screen.width - bounds.width));
+    int y = Math.max(screen.y, Math.min(bounds.y, screen.y + screen.height - bounds.height));
+    if (x != bounds.x || y != bounds.y) {
+      window.setLocation(x, y);
+    }
   }
 
   protected Point getDesiredWindowLocation() {
