@@ -2,7 +2,7 @@
 
 Workplan WP13.4. Run on the owner's Windows PC. Tick each step, and note anything odd, with a screenshot if you can. Keep the record in a copy of this file, or as an issue on GitHub.
 
-**You need:** the StoryStage zip from the latest green CI run on the `storystage` branch (artifact **StoryStage-windows-x64**); a Claude Console account with a workspace called StoryStage, a monthly spend limit and an API key; a microphone and speakers; about 1 GB free disk. The full script takes about 90 minutes and costs about US$1 in Claude usage, or about US$4 with the evaluation run.
+**You need:** the StoryStage zip from the latest green CI run on the `storystage` branch (artifact **StoryStage-windows-x64**); a Claude Console account with a workspace called StoryStage, a monthly spend limit and an API key; a microphone and speakers; about 1 GB free disk. The full script takes about 90 minutes and costs about US$3 in Claude usage (requests cost 10 to 50 US cents each in the first test), or about US$13 with the evaluation run.
 
 Never paste the key anywhere except the StoryStage set-up wizard.
 

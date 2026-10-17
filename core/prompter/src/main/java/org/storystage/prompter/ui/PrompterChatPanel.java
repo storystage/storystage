@@ -94,12 +94,17 @@ final class PrompterChatPanel extends JPanel implements PrompterSession.View {
       this.revalidate();
     }));
 
-    JPanel buttons = new JPanel(new FlowLayout(FlowLayout.LEFT, 4, 0));
-    buttons.add(this.holdToTalk.getButton());
-    buttons.add(this.send);
-    buttons.add(this.stop);
-    buttons.add(this.undo);
-    buttons.add(this.newConversation);
+    // Two rows, so every button fits in the panel's default width (TR1: Undo was cut off).
+    JPanel talkRow = new JPanel(new FlowLayout(FlowLayout.LEFT, 4, 0));
+    talkRow.add(this.holdToTalk.getButton());
+    talkRow.add(this.send);
+    talkRow.add(this.stop);
+    JPanel historyRow = new JPanel(new FlowLayout(FlowLayout.LEFT, 4, 0));
+    historyRow.add(this.undo);
+    historyRow.add(this.newConversation);
+    JPanel buttons = new JPanel(new BorderLayout(0, 4));
+    buttons.add(talkRow, BorderLayout.PAGE_START);
+    buttons.add(historyRow, BorderLayout.PAGE_END);
     JPanel south = new JPanel(new BorderLayout(0, 4));
     south.add(new JScrollPane(this.input), BorderLayout.PAGE_START);
     south.add(buttons, BorderLayout.CENTER);

@@ -36,7 +36,7 @@ Anthropic handles this data under the account holder's agreement with Anthropic.
 
 **Your Claude key** is kept in your computer's secure credential store (Windows Credential Manager, macOS Keychain or the Linux Secret Service). It is sent only to Anthropic. **Remove key** in the Prompter panel deletes it and switches the Prompter off.
 
-**Cost:** requests are charged to the Claude account. StoryStage shows an estimate; the Claude Console shows the real amount. We recommend a monthly spend limit.
+**Cost:** requests are charged to the Claude account, usually 10 to 30 US cents each (the first in a session costs more). StoryStage shows an estimate; the Claude Console shows the real amount. We recommend a monthly spend limit.
 
 ## Voice
 

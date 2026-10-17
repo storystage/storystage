@@ -31,7 +31,7 @@ final class PrivacyNotice {
         + "<p><b>What is never sent:</b> recordings of your voice (speech is turned into text on this computer), "
         + "your other files, or your key to anyone but Anthropic.</p>"
         + "<p><b>Your key</b> is kept in this computer's secure credential store. Remove it at any time with <b>Remove key</b>.</p>"
-        + "<p><b>Cost:</b> a typical request costs about 7 US cents on your Claude account. Set a spend limit in the Claude Console.</p>"
+        + "<p><b>Cost:</b> a request usually costs 10 to 30 US cents on your Claude account, and the first one in a session up to about 50 cents. Set a spend limit in the Claude Console.</p>"
         + "<p><b>Schools</b> can turn the Prompter off, or set it to explain only, for everyone on a computer.</p>";
   }
 
