@@ -3,24 +3,25 @@
  */
 package org.storystage.prefs;
 
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.io.TempDir;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
 
-import java.io.File;
 import java.util.Arrays;
 import java.util.prefs.Preferences;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class FilePreferencesTest {
-  @TempDir
-  File folder;
+  // JUnit 4: the util module runs JUnit 4 tests only.
+  @Rule
+  public TemporaryFolder folder = new TemporaryFolder();
 
   private Preferences root() {
-    return new FilePreferences(null, "", this.folder);
+    return new FilePreferences(null, "", this.folder.getRoot());
   }
 
   @Test
